@@ -1,5 +1,6 @@
 const fs = require("fs");
 const express = require("express");
+const subdomain = require("express-subdomain");
 const https = require("https");
 const sslCertDirectory = "sslcert";
 const port = 443;
@@ -13,6 +14,7 @@ const credentials = {
 // Server setup
 let app = express();
 app.set("view engine", "ejs");
+app.use(subdomain("git", express.static(__dirname + "/subdomains/git/")));
 app.get("/", (req, res) => res.render("pages/index"));
 app.use((req, res, next) => res.status(404).render("pages/404"));
 https.createServer(credentials, app).listen(port, () => console.log(`HTTPS server listening on port ${port}`));

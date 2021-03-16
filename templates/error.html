@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+  {{template "head" .Code}}
+  <body>
+    <div class="error">
+      <p class="errorHighlight">Critical Error</p>
+      <p><b class="errorHighlight">{{.Code}}:</b> {{.Message}}</p>
+    </div>
+  </body>
+</html>

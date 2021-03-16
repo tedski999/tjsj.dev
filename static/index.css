@@ -1,8 +1,23 @@
-
 body {
   background-color: black;
 }
 
-h1, h2 {
+h1, h2, h3, p {
   color: white;
+}
+
+div.error {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+div.error p {
+  color: white;
+}
+
+div.error .errorHighlight {
+  color: red;
 }

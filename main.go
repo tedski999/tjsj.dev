@@ -13,7 +13,7 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 
 	log.Println("Setting up routes...")
-	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/", homeHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
 	log.Println("Starting HTTPS server...")
@@ -21,8 +21,17 @@ func main() {
 	log.Fatal(err)
 }
 
-func indexHandler(w http.ResponseWriter, req *http.Request) {
-	// DEBUG: reloading templates at runtime
-	templates = template.Must(template.ParseGlob("templates/*.html"))
-	templates.ExecuteTemplate(w, "index.html", nil)
+func homeHandler(w http.ResponseWriter, req *http.Request) {
+	if req.URL.Path != "/" {
+		errorHandler(w, req, http.StatusNotFound)
+		return
+	}
+
+	templates.ExecuteTemplate(w, "home.html", nil)
+}
+
+func errorHandler(w http.ResponseWriter, req *http.Request, code int) {
+	w.WriteHeader(code)
+	data := struct { Code int; Message string } { code, http.StatusText(code) }
+	templates.ExecuteTemplate(w, "error.html", data)
 }

@@ -1,7 +1,2 @@
-/node_modules
-/sslcert
-
-# Exclude stagit generated content
-/subdomains/git/*
-!/subdomains/git/favicon.png
-!/subdomains/git/style.css
+/certs
+/data

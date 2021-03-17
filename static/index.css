@@ -6,6 +6,12 @@ h1, h2, h3, p {
   color: white;
 }
 
+.ascii-art {
+  line-height: 1;
+  font-size: large;
+  color: red;
+}
+
 .topnav {
   display: table;
   table-layout: fixed;
@@ -43,10 +49,6 @@ h1, h2, h3, p {
   text-align: center;
 }
 
-.error p {
-  color: white;
-}
-
-.error .errorHighlight {
+.error-highlight {
   color: red;
 }

@@ -6,7 +6,36 @@ h1, h2, h3, p {
   color: white;
 }
 
-div.error {
+.topnav {
+  display: table;
+  table-layout: fixed;
+  width: 90%;
+  max-width: 50em;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.topnav li {
+  display: table-cell;
+  text-align: center;
+}
+
+.topnav a {
+  color: orange;
+}
+
+.topnav a:hover {
+  color: yellow;
+}
+
+.main {
+  width: 90%;
+  max-width: 75em;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.error {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -14,10 +43,10 @@ div.error {
   text-align: center;
 }
 
-div.error p {
+.error p {
   color: white;
 }
 
-div.error .errorHighlight {
+.error .errorHighlight {
   color: red;
 }

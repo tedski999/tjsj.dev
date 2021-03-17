@@ -7,10 +7,25 @@ import (
 
 func NewRouter() http.Handler {
 	mux := http.NewServeMux()
+
+	// Routes
 	mux.HandleFunc("/", homeHandler)
 	mux.HandleFunc("/projects/", projectsHandler)
 	mux.HandleFunc("/posts/", postsHandler)
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+
+	// Static file server
+	staticFileSystem := http.Dir("./static/")
+	staticFileServer := http.FileServer(staticFileSystem)
+	staticHandler := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		_, err := staticFileSystem.Open(req.URL.Path)
+		if err == nil {
+			staticFileServer.ServeHTTP(w, req)
+		} else {
+			errorHandler(w, req, http.StatusNotFound)
+		}
+	})
+	mux.Handle("/static/", http.StripPrefix("/static/", staticHandler))
+
 	return mux
 }
 

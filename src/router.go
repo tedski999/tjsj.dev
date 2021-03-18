@@ -17,8 +17,9 @@ func NewRouter() http.Handler {
 	staticFileSystem := http.Dir("./static/")
 	staticFileServer := http.FileServer(staticFileSystem)
 	staticHandler := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		_, err := staticFileSystem.Open(req.URL.Path)
+		file, err := staticFileSystem.Open(req.URL.Path)
 		if err == nil {
+			file.Close()
 			staticFileServer.ServeHTTP(w, req)
 		} else {
 			errorHandler(w, req, http.StatusNotFound)

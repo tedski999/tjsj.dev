@@ -8,6 +8,7 @@ import (
 func main() {
 	log.Println("Loading HTML templates...")
 	LoadTemplates("templates/*.html")
+	LoadTitleGoofs("./data/titlegoofs.txt")
 
 	log.Println("Creating routes...")
 	r := NewRouter()

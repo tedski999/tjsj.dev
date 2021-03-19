@@ -37,14 +37,16 @@ func homeHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// TODO: pass list of recent projects and posts into the template
-	ExecuteTemplate(w, "home.html", nil)
+	data := struct { TitleGoof string } { GetRandomTitleGoof() }
+	ExecuteTemplate(w, "home.html", data)
 }
 
 func projectsHandler(w http.ResponseWriter, req *http.Request) {
 	selection := strings.TrimPrefix(req.URL.Path, "/projects/")
 	if len(selection) == 0 {
 		// TODO: pass the list of projects into the template
-		ExecuteTemplate(w, "projects.html", nil)
+		data := struct { TitleGoof string } { GetRandomTitleGoof() }
+		ExecuteTemplate(w, "projects.html", data)
 	} else {
 		// TODO: find the project with a name equal to selection
 		// TODO: if none found, 404
@@ -56,7 +58,8 @@ func postsHandler(w http.ResponseWriter, req *http.Request) {
 	selection := strings.TrimPrefix(req.URL.Path, "/posts/")
 	if len(selection) == 0 {
 		// TODO: pass the list of posts into the template
-		ExecuteTemplate(w, "posts.html", nil)
+		data := struct { TitleGoof string } { GetRandomTitleGoof() }
+		ExecuteTemplate(w, "posts.html", data)
 	} else {
 		// TODO: find the post with a name equal to selection
 		// TODO: if none found, 404

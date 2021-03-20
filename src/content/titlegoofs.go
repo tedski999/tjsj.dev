@@ -1,4 +1,4 @@
-package main
+package content
 
 import (
 	"bufio"
@@ -7,8 +7,9 @@ import (
 	"time"
 )
 
-var lines []string
+var titleGoofs []string
 
+// Load each line as a separate goof
 func LoadTitleGoofs(filepath string) error {
 	rand.Seed(time.Now().Unix())
 
@@ -17,16 +18,17 @@ func LoadTitleGoofs(filepath string) error {
 		return err
 	}
 
-	lines = nil
+	titleGoofs = nil
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		titleGoofs = append(titleGoofs, scanner.Text())
 	}
 
 	file.Close()
 	return scanner.Err()
 }
 
+// Return a randomly picked goof from the loaded title goofs
 func GetRandomTitleGoof() string {
-	return lines[rand.Intn(len(lines))]
+	return titleGoofs[rand.Intn(len(titleGoofs))]
 }

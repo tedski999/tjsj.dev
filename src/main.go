@@ -2,19 +2,14 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"github.com/tedski999/tjsj.dev/src/content"
+	"github.com/tedski999/tjsj.dev/src/server"
 )
 
 func main() {
-	log.Println("Loading HTML templates...")
-	LoadTemplates("templates/*.html")
-	LoadTitleGoofs("./data/titlegoofs.txt")
-
-	log.Println("Creating routes...")
-	r := NewRouter()
-
+	log.Println("Loading content...")
+	content.LoadTemplates("./templates/*.html")
+	content.LoadTitleGoofs("./data/titlegoofs.txt")
 	log.Println("Starting HTTPS server...")
-	err := http.ListenAndServeTLS(":443", "certs/fullchain.pem", "certs/privkey.pem", r)
-	log.Fatal(err)
+	log.Fatal(server.StartServer())
 }
-

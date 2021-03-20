@@ -1,10 +1,8 @@
 TARGET = ./bin/tjsj
-SRC := $(wildcard ./src/*.go)
 
-${TARGET}: ${SRC}
+${TARGET}:
 	$(info Building ${TARGET}...)
-	@mkdir -p $(dir ${TARGET})
-	@go build -o $@ $^
+	@go build -o $@ ./src
 
 .PHONY: run
 run: ${TARGET}

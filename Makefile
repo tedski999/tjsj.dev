@@ -1,6 +1,6 @@
 TARGET = ./bin/tjsj
 
-${TARGET}:
+${TARGET}: $(shell find ./src -type f)
 	$(info Building ${TARGET}...)
 	@go build -o $@ ./src
 

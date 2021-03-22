@@ -9,7 +9,7 @@ import (
 func main() {
 	log.Println("Loading content...")
 	content.LoadTemplates("./templates/*.html")
-	content.LoadTitleGoofs("./data/titlegoofs.txt")
+	content.LoadSplashes("./content/splashes.txt")
 	log.Println("Starting HTTPS server...")
 	log.Fatal(server.StartServer())
 }

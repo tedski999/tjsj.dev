@@ -53,10 +53,11 @@ its very cool
 	- [ ] Any input injection
 	- [ ] Response timeout
 	- [ ] Anything else I'm currently forgetting
-- [ ] Deployment
+- [x] Deployment
 	- [x] Secure personal server
-	- [ ] Automated website updating from git repo
-	- [ ] Automated server updating
+	- [x] Automated website updating from git repo
+	- [x] Automated server updating
+- [x] Title splashes
 - [ ] RSS feed / Mailing list?
 - [ ] Mail server / forwarding?
 - [ ] VPN?
@@ -81,5 +82,4 @@ $ go build -o ./bin/tjsj ./src
 
 The website should now be hosted on your machine accessable via port 443:
 https://localhost
-
 

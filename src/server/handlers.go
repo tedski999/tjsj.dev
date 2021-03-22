@@ -16,21 +16,21 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: pass list of recent projects and posts into the template
-	data := struct { TitleGoof string } { content.GetRandomTitleGoof() }
+	data := struct { SplashText string } { content.GetRandomSplash() }
 	content.ExecuteTemplate(w, "home.html", data)
 }
 
 // Respond with a list of projects in the HTML template "projects.html"
 func projectsListHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of projects metadata
-	data := struct { TitleGoof string } { content.GetRandomTitleGoof() }
+	data := struct { SplashText string } { content.GetRandomSplash() }
 	content.ExecuteTemplate(w, "projects.html", data)
 }
 
 // Respond with a list of posts in the HTML template "posts.html"
 func postsListHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of posts metadata
-	data := struct { TitleGoof string } { content.GetRandomTitleGoof() }
+	data := struct { SplashText string } { content.GetRandomSplash() }
 	content.ExecuteTemplate(w, "posts.html", data)
 }
 

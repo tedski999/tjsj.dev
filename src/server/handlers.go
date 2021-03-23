@@ -7,14 +7,7 @@ import (
 )
 
 // Respond with the HTML template "home.html"
-func rootHandler(w http.ResponseWriter, r *http.Request) {
-
-	// Reject URLs that don't match '/' exactly
-	if r.URL.Path != "/" {
-		errorHandler(w, r, http.StatusNotFound)
-		return
-	}
-
+func homeHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: pass list of recent projects and posts into the template
 	data := struct { SplashText string } { content.GetRandomSplash() }
 	content.ExecuteTemplate(w, "home.html", data)

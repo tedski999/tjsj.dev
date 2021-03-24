@@ -11,7 +11,7 @@ func main() {
 
 	// Register signals
 	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs)
+	signal.Notify(sigs, os.Interrupt, os.Kill)
 
 	// TODO: tui
 
@@ -30,7 +30,8 @@ func main() {
 
 	// Gracefully exit if a signal is received
 	log.Println("Web server listening on port 443")
-	<- sigs
+	sig := <-sigs
+	log.Println("Received " + sig.String() + " signal")
 	log.Println("Stopping web server...")
 	srv.Stop()
 

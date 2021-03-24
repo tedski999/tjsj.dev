@@ -1,15 +1,11 @@
-TARGET = ./bin/tjsj
+TJSJ_TARGET = ./bin/tjsj
+SRC_FILES := $(shell find ./cmd ./pkg -type f)
 
-${TARGET}: $(shell find ./src -type f)
-	$(info Building ${TARGET}...)
-	@go build -o $@ ./src
-
-.PHONY: run
-run: ${TARGET}
-	$(info Running ${TARGET}...)
-	@${TARGET}
+${TJSJ_TARGET}: $(SRC_FILES)
+	$(info Building ${TJSJ_TARGET}...)
+	@go build -o $@ ./cmd/tjsj
 
 .PHONY: clean
 clean:
 	$(info Cleaning...)
-	@rm -rf $(dir ${TARGET})
+	@rm -rf $(dir ${TJSJ_TARGET})

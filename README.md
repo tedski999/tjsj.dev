@@ -13,7 +13,7 @@ its very cool
 	- [x] Navigation bar
 	- [x] Custom error page
 	- [x] Static public content / file server
-	- [ ] Projects / Posts selection
+	- [ ] Posts selection
 - [ ] CSS Styling
 	- [x] Dark theme
 	- [ ] Font family
@@ -28,11 +28,9 @@ its very cool
 	- [ ] Search by content
 	- [ ] Sort by date
 	- [ ] Filter by tags
-- [ ] Projects
-	- [ ] List of projects
-	- [ ] Merging of logic for posts and projects? Projects could be a type of post
-	- [ ] Download links
 	- [ ] Embed web projects (p5.js/etc)
+	- [ ] Download links
+	- [ ] Seperate presentation for project?
 - [ ] Static git pages
 	- [ ] Stagit
 	- [ ] Git post-hooks
@@ -51,12 +49,12 @@ its very cool
 - [ ] Security
 	- [ ] Sanitized URL parsing
 	- [ ] Any input injection
-	- [ ] Response timeout
+	- [x] Response timeout
 	- [ ] Anything else I'm currently forgetting
-- [x] Deployment
+- [ ] Deployment
 	- [x] Secure personal server
-	- [x] Automated website updating from git repo
-	- [x] Automated server updating
+	- [ ] TUI status
+	- [ ] Email notifcations
 - [x] Title splashes
 - [ ] RSS feed / Mailing list?
 - [ ] Mail server / forwarding?

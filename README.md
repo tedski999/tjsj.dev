@@ -6,7 +6,7 @@ its very cool
 
 ## TODO List
 
-- [x] Golang HTTPS server
+- [x] Go HTTPS server
 - [ ] Routing & Navigation
 	- [x] Routing & handlers
 	- [x] HTML templates
@@ -30,7 +30,7 @@ its very cool
 	- [ ] Filter by tags
 	- [ ] Embed web projects (p5.js/etc)
 	- [ ] Download links
-	- [ ] Seperate presentation for project?
+	- [ ] Separate presentation for project?
 - [ ] Static git pages
 	- [ ] Stagit
 	- [ ] Git post-hooks
@@ -54,7 +54,7 @@ its very cool
 - [ ] Deployment
 	- [x] Secure personal server
 	- [ ] TUI status
-	- [ ] Email notifcations
+	- [ ] Email notifications
 - [x] Title splashes
 - [ ] RSS feed / Mailing list?
 - [ ] Mail server / forwarding?
@@ -68,16 +68,26 @@ $ git clone https://github.com/tedski999/tjsj.dev.git
 $ cd tjsj.dev
 ```
 
-Build & run
+Link the CA certificates
 ```
-$ make run
-```
-
-...or compile manually using the Go compiler
-```
-$ go build -o ./bin/tjsj ./src
+$ ln -s /wherever/the/live/certs/are/ ./web/certs
 ```
 
-The website should now be hosted on your machine accessable via port 443:
-https://localhost
+Compiling the Go program
+```
+$ make
+```
+
+Allowing program to bind to protected ports
+```
+# setcap CAP_NET_BIND_SERVICE=+eip ./bin/tjsj
+```
+
+Starting the server
+```
+$ ./bin/tjsj
+```
+
+The website should now be hosted on your machine accessible via HTTPS:
+https://localhost/
 

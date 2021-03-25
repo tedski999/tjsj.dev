@@ -5,5 +5,6 @@ const (
 	keyFilePath = "./web/certs/privkey.pem"
 	staticFilesDir = "./web/static"
 	splashesFilePath = "./web/data/splashes.txt"
-	templateFilePaths = "./web/templates"
+	contentDir = "./web/content"
+	pagesDir = "./web/templates"
 )

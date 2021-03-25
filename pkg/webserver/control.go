@@ -19,6 +19,8 @@ func (srv *Server) Start() error {
 		}
 	}()
 
+	// TODO: email server, etc...
+
 	return <- errChan
 }
 

@@ -1,24 +1,11 @@
 package webcontent
 
-import (
-	"html/template"
-	"math/rand"
-	"time"
-)
+// TODO: loading and parsing markdown posts into html
 
 type Content struct {
-	htmlTemplates *template.Template
-	splashes []string
-	random *rand.Rand
 }
 
-func Create() *Content {
-	random := rand.New(rand.NewSource(time.Now().Unix()))
-
-	content := &Content {
-		htmlTemplates: nil,
-		random: random,
+func Load(dirpath string) *Content {
+	return &Content {
 	}
-
-	return content
 }

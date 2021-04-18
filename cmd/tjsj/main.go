@@ -5,37 +5,63 @@ import (
 	"os"
 	"os/signal"
 	"github.com/tedski999/tjsj.dev/pkg/webserver"
+	"github.com/tedski999/tjsj.dev/pkg/webcontent"
 )
 
 func main() {
+	var err error
 
-	// Register signals
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, os.Interrupt, os.Kill)
+	// Create a new content manager
+	log.Println("Creating content manager...")
+	var content *webcontent.Content
+	content, err = webcontent.Create("./web/templates/", "./web/posts/", "./web/splashes.txt")
+	if err != nil {
+		log.Println("An error occurred while creating the content manager:\n" + err.Error())
+		return
+	}
 
-	// TODO: tui
-
-	// Create a new server
+	// Create a new web server
 	log.Println("Creating web server...")
-	srv := webserver.Create()
+	var server *webserver.Server
+	server, err = webserver.Create(content)
+	if err != nil {
+		log.Println("An error occurred while creating the web server:\n" + err.Error())
+		return
+	}
 
-	// Start the server on a new thread
+	// Setup channels for signals and goroutine errors
+	sigChan := make(chan os.Signal, 1)
+	errChan := make(chan error)
+	exitChan := make(chan bool, 1)
+	signal.Notify(sigChan, os.Interrupt, os.Kill)
+
+	// Start the content manager and web server
+	log.Println("Starting content manager...")
+	content.Start(errChan)
 	log.Println("Starting web server...")
+	server.Start(errChan)
+	log.Println("Web server listening on :443")
+
 	go func() {
-		err := srv.Start()
-		if err != nil {
-			log.Fatal("An error occurred while running the web server:\n" + err.Error())
+		for {
+			// Wait for either a signal or an error
+			select {
+			case sig := <-sigChan:
+				log.Println("Received " + sig.String())
+			case err := <-errChan:
+				log.Println("An error occurred while running the web server:\n" + err.Error())
+			}
+
+			// Let main start to exit
+			exitChan <- true
 		}
 	}()
 
-	// Gracefully exit if a signal is received
-	log.Println("Web server listening on port 443")
-	sig := <-sigs
-	log.Println("Received " + sig.String() + " signal")
+	// Attempt to gracefully exit if an exception occurs
+	<-exitChan
+	log.Println("Stopping content manager...")
+	content.Stop()
 	log.Println("Stopping web server...")
-	srv.Stop()
-
-	// TODO: A signal to call something like srv.Reload() instead
-	// This would reload certs, content and templates without closing connections and such
+	server.Stop()
 	log.Println("Goodbye!")
 }

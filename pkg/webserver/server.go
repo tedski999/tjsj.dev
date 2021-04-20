@@ -7,6 +7,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/tedski999/tjsj.dev/pkg/fileserver"
 	"github.com/tedski999/tjsj.dev/pkg/webcontent"
+	"github.com/tdewolff/minify/v2"
+	"github.com/tdewolff/minify/v2/css"
 )
 
 type Server struct {
@@ -44,6 +46,11 @@ func Create(content *webcontent.Content) (*Server, error) {
 	// Serve static files, redirect anything else to the error response
 	staticFileServer := fileserver.Create("./web/static/", server.errorResponse)
 	router.PathPrefix("/").Handler(staticFileServer)
+
+	// Setup CSS minifier
+	minifier := minify.New()
+	minifier.AddFunc("text/css", css.Minify)
+	router.Use(minifier.Middleware)
 
 	return server, nil
 }

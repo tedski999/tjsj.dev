@@ -1,0 +1,15 @@
+[Unit]
+Description=tjsj.dev Web Server
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/tjsj.dev
+ExecStart=/srv/tjsj.dev/bin/tjsj.dev
+Restart=always
+User=tjsj_dev
+Group=tjsj_dev
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+ExecStartPre=+/usr/bin/install -m 400 -o tjsj_dev -g tjsj_dev -Dt /srv/tjsj.dev/web/certs /etc/letsencrypt/live/tjsj.dev/privkey.pem /etc/letsencrypt/live/tjsj.dev/fullchain.pem
+
+[Install]
+WantedBy=multi-user.target

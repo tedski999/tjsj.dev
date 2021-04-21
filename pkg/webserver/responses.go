@@ -26,7 +26,8 @@ func (server *Server) homeResponse(w http.ResponseWriter, r *http.Request) {
 // Respond with a list of posts in the HTML template "posts.html"
 func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of posts metadata
-	server.executeHTMLTemplate(w, "posts.html", nil)
+	// server.executeHTMLTemplate(w, "posts.html", nil)
+	server.errorResponse(w, r, http.StatusNotFound)
 }
 
 // Respond with the post page of the id given in the URL

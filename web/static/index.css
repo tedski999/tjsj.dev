@@ -1,39 +1,39 @@
+:root {
+  --primary-bg-color: black;
+  --primary-font-family: "Courier New", Courier, monospace;
+  --primary-text-color: red;
+  --primary-link-color: orange;
+  --primary-link-hover-color: yellow;
+}
+
+/* Common styling */
 body {
-  background-color: black;
+  background-color: var(--primary-bg-color);
+  font-family: var(--primary-font-family);
+  color: var(--primary-text-color);
+}
+a {
+  color: var(--primary-link-color);
+}
+a:hover {
+  color: var(--primary-link-hover-color);
 }
 
-h1, h2, h3, p {
-  color: white;
-}
-
-.ascii-art {
-  line-height: 1;
-  font-size: large;
-  color: red;
-}
-
+/* Navigation bar */
 .topnav {
   display: table;
   table-layout: fixed;
   width: 90%;
   max-width: 50em;
-  margin: 0 auto;
+  margin: 0 auto 1.5em auto;
   padding: 0;
 }
-
 .topnav li {
   display: table-cell;
   text-align: center;
 }
 
-.topnav a {
-  color: orange;
-}
-
-.topnav a:hover {
-  color: yellow;
-}
-
+/* Horizontal stretch limiting of the page content */
 .main {
   width: 90%;
   max-width: 75em;
@@ -41,14 +41,38 @@ h1, h2, h3, p {
   padding: 0;
 }
 
+/* Error page */
 .error {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  padding: 0 1em;
+  border-style: double;
+  border-color: red;
+  font-family: monospace, var(--primary-font-family);
+  color: white;
 }
-
 .error-highlight {
   color: red;
+}
+
+/* "Under Construction" marquee at bottom of screen */
+.under-construction-marquee {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  white-space: nowrap;
+}
+.under-construction-marquee div {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 10s linear infinite;
+}
+@keyframes marquee {
+  100% {
+    transform: translate(-100%, 0);
+  }
 }

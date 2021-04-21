@@ -9,21 +9,18 @@ import (
 )
 
 func main() {
-	var err error
 
-	// Create a new content manager
-	log.Println("Creating content manager...")
-	var content *webcontent.Content
-	content, err = webcontent.Create("./web/templates/", "./web/posts/", "./web/splashes.txt")
+	// Load all web content
+	log.Println("Loading web content...")
+	content, err := webcontent.Create("./web/templates/", "./web/posts/", "./web/splashes.txt")
 	if err != nil {
-		log.Println("An error occurred while creating the content manager:\n" + err.Error())
+		log.Println("An error occurred while loading web content:\n" + err.Error())
 		return
 	}
 
 	// Create a new web server
 	log.Println("Creating web server...")
-	var server *webserver.Server
-	server, err = webserver.Create(content)
+	server, err := webserver.Create(content)
 	if err != nil {
 		log.Println("An error occurred while creating the web server:\n" + err.Error())
 		return
@@ -36,8 +33,6 @@ func main() {
 	signal.Notify(sigChan, os.Interrupt, os.Kill)
 
 	// Start the content manager and web server
-	log.Println("Starting content manager...")
-	content.Start(errChan)
 	log.Println("Starting web server...")
 	server.Start(errChan)
 	log.Println("Web server listening on :443")
@@ -59,8 +54,6 @@ func main() {
 
 	// Attempt to gracefully exit if an exception occurs
 	<-exitChan
-	log.Println("Stopping content manager...")
-	content.Stop()
 	log.Println("Stopping web server...")
 	server.Stop()
 	log.Println("Goodbye!")

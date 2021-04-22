@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"sync"
 	"time"
+	"strings"
 	"github.com/gorilla/mux"
 	"github.com/tedski999/tjsj.dev/pkg/fileserver"
 	"github.com/tedski999/tjsj.dev/pkg/webcontent"
@@ -37,7 +38,6 @@ func Create(content *webcontent.Content) (*Server, error) {
 	}
 
 	// Setup HTTP route multiplexing
-	// TODO: subdomain handling
 	router.StrictSlash(true)
 	router.HandleFunc("/", server.homeResponse)
 	router.HandleFunc("/posts/", server.postsResponse)
@@ -46,6 +46,20 @@ func Create(content *webcontent.Content) (*Server, error) {
 	// Serve static files, redirect anything else to the error response
 	staticFileServer := fileserver.Create("./web/static/", server.errorResponse)
 	router.PathPrefix("/").Handler(staticFileServer)
+
+	// Middleware to trim any requests prefixed with "www."
+	router.Use(func (next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasPrefix(r.Host, "www.") {
+				u := *r.URL
+				u.Host = strings.TrimPrefix(r.Host, "www.")
+				http.Redirect(w, r, u.String(), http.StatusFound)
+			} else {
+				next.ServeHTTP(w, r)
+			}
+
+		})
+	})
 
 	// Setup CSS minifier
 	minifier := minify.New()

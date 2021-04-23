@@ -12,7 +12,7 @@ func main() {
 
 	// Load all web content
 	log.Println("Loading web content...")
-	content, err := webcontent.Create("./web/templates/", "./web/posts/", "./web/splashes.txt")
+	content, err := webcontent.Create("./web/static/", "./web/templates/", "./web/posts/", "./web/splashes.txt")
 	if err != nil {
 		log.Println("An error occurred while loading web content:\n" + err.Error())
 		return
@@ -20,7 +20,7 @@ func main() {
 
 	// Create a new web server
 	log.Println("Creating web server...")
-	server, err := webserver.Create(content)
+	server, err := webserver.Create(content, "./web/certs/fullchain.pem", "./web/certs/privkey.pem")
 	if err != nil {
 		log.Println("An error occurred while creating the web server:\n" + err.Error())
 		return

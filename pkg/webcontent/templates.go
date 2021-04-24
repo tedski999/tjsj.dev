@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"path/filepath"
 	"io/ioutil"
+    "strings"
 	"errors"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/html"
@@ -24,12 +25,17 @@ func (content *Content) loadHTMLTemplates() error {
 		return errors.New("No HTML template files found in '" + content.templateDirPath + "'!")
 	}
 
-	// Setup HTML minifier
-	minifier := minify.New()
-	minifier.AddFunc("text/html", html.Minify)
+	// Add util functions for templates
+	content.htmlTemplates = template.New("")
+	content.htmlTemplates.Funcs(template.FuncMap{
+		"split": func(s string) []string { return strings.Split(s, "") },
+		"randomRange": func(min, max int) int { return content.random.Intn(max - min) + min },
+		"N": func(n int) []int { return make([]int, n) },
+	})
 
 	// Minify every file before adding it to the templates
-	content.htmlTemplates = template.New("")
+	minifier := minify.New()
+	minifier.AddFunc("text/html", html.Minify)
 	for _, filename := range filenames {
 
 		// Minify HTML template gile

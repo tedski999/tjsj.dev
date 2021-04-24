@@ -1,0 +1,6 @@
+{{define "randomCharacterPopin"}}
+<p class="random-popin">
+  {{range N (randomRange 0 9)}}<span></span>{{end}}
+  {{range split .}}<span>{{.}}</span>{{end}}
+</p>
+{{end}}

@@ -1,12 +1,12 @@
 {{define "nav"}}
 <nav>
-  <ul class="topnav">
-    <li><a href="/">home</a></li>
-    <li><a href="/projects/">work</a></li>
-    <li><a href="/posts/">posts</a></li>
-    <li><a href="/repos/">repos</a></li>
-    <li><a href="/cv.pdf">c.v</a></li>
-    <li><a href="/stats">stats</a></li>
+	<ul class="topnav {{if .}}ordered-popin{{end}}">
+    <li style="--animation-order: 6"><a href="/">home</a></li>
+    <li style="--animation-order: 4"><a href="/projects/">work</a></li>
+    <li style="--animation-order: 2"><a href="/posts/">posts</a></li>
+    <li style="--animation-order: 2"><a href="/repos/">repos</a></li>
+    <li style="--animation-order: 4"><a href="/cv.pdf">c.v</a></li>
+    <li style="--animation-order: 6"><a href="/stats">stats</a></li>
   </ul>
 </nav>
 {{end}}

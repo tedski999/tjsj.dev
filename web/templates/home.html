@@ -2,35 +2,35 @@
 <html lang="en">
   {{template "head" "Home"}}
   <body>
-    {{template "nav"}}
-    <div class="main">
+    {{template "nav" true}}
+    <div class="main ordered-popin">
 
-      <fieldset class="home-panel">
+      <fieldset class="home-panel" style="--animation-order: 2">
         <legend>Welcome</legend>
         {{template "randomCharacterPopin" "Welcome to tjsj.dev. As you can see, there's not much to see."}}
         {{template "randomCharacterPopin" "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now..."}}
       </fieldset>
       <br>
-      <div style="column-count: 2;">
+      <div style="column-count: 2; --animation-order: 10">
         <fieldset class="home-panel">
           <legend>Recent Posts</legend>
           <ul class="ordered-popin">
-            <li style="--animation-order: 1">0x0000 i haven't officially posted anything yet</li>
-            <li style="--animation-order: 2">0x0004 soon, but i need to finish this page first</li>
-            <li style="--animation-order: 3">0x0008 in the meantime, <a href="https://bit.ly/3esFaph">look at this cool picture</a></li>
-            <li style="--animation-order: 4">0x000C ikr it's awesome</li>
+            <li style="--animation-order: 15">0x0000 i haven't officially posted anything yet</li>
+            <li style="--animation-order: 16">0x0004 soon, but i need to finish this page first</li>
+            <li style="--animation-order: 17">0x0008 in the meantime, <a href="https://bit.ly/3esFaph">look at this cool picture</a></li>
+            <li style="--animation-order: 18">0x000C ikr it's awesome</li>
           </ul>
         </fieldset>
         <fieldset class="home-panel">
           <legend>Links</legend>
           <ul class="ordered-popin">
-            <li style="--animation-order: 1">0x0000 email: tedjohnsonjs@gmail.com</li>
-            <li style="--animation-order: 2">0x0004 phone: (+353) 87 103 4822</li>
-            <li style="--animation-order: 3">0x0008 <a href="cv.pdf">my cv</a></li>
-            <li style="--animation-order: 4">0x000C <a href="https://github.com/tedski999">my github page</a></li>
+            <li style="--animation-order: 15">0x0000 email: tedjohnsonjs@gmail.com</li>
+            <li style="--animation-order: 16">0x0004 phone: (+353) 87 103 4822</li>
+            <li style="--animation-order: 17">0x0008 <a href="cv.pdf">my cv</a></li>
+            <li style="--animation-order: 18">0x000C <a href="https://github.com/tedski999">my github page</a></li>
           </ul>
         </fieldset>
-      <div>
+      </div>
 
     </div>
     <div class="under-construction-marquee">

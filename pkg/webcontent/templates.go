@@ -29,8 +29,6 @@ func (content *Content) loadHTMLTemplates() error {
 	content.htmlTemplates = template.New("")
 	content.htmlTemplates.Funcs(template.FuncMap{
 		"split": func(s string) []string { return strings.Split(s, "") },
-		"randomRange": func(min, max int) int { return content.random.Intn(max - min) + min },
-		"N": func(n int) []int { return make([]int, n) },
 	})
 
 	// Minify every file before adding it to the templates

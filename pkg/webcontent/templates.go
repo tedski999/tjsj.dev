@@ -28,7 +28,26 @@ func (content *Content) loadHTMLTemplates() error {
 	// Add util functions for templates
 	content.htmlTemplates = template.New("")
 	content.htmlTemplates.Funcs(template.FuncMap{
-		"split": func(s string) []string { return strings.Split(s, "") },
+		"add": func(a, b int) int {
+			return a + b
+		},
+		"split": func(text string) []string {
+			return strings.Split(text, "")
+		},
+		"dict": func(keyvalues ...interface{}) map[string]interface{} {
+			dict := make(map[string]interface{}, len(keyvalues) / 2)
+			for i := 0; i < len(keyvalues); i += 2 {
+				key := keyvalues[i].(string)
+				dict[key] = keyvalues[i + 1]
+			}
+			return dict
+		},
+		"list": func(list ...interface{}) []interface{} {
+			return list
+		},
+		"toHTML": func(text template.HTML) template.HTML {
+			return text
+		},
 	})
 
 	// Minify every file before adding it to the templates

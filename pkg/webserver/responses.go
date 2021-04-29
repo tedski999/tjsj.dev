@@ -2,8 +2,15 @@ package webserver
 
 import (
 	"net/http"
+	"html/template"
 	"errors"
 )
+
+type homeResponseData struct {
+	SplashText string
+	ProjectsList []template.HTML
+	RecentPostsList []template.HTML
+}
 
 // General method for executing HTML templates by name
 func (server *Server) executeHTMLTemplate(w http.ResponseWriter, templateName string, data interface{}) {
@@ -19,7 +26,12 @@ func (server *Server) executeHTMLTemplate(w http.ResponseWriter, templateName st
 // Respond with the HTML template "home.html"
 func (server *Server) homeResponse(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of recent posts metadata
-	data := struct { SplashText string } { server.content.GetRandomSplashText() }
+	data := homeResponseData {
+		server.content.GetRandomSplashText(),
+		nil,
+		nil,
+	}
+
 	server.executeHTMLTemplate(w, "home.html", data)
 }
 

@@ -9,28 +9,18 @@
 
         <fieldset class="home-panel" style="animation-delay: 100ms">
           <legend>Welcome</legend>
-          {{template "randomCharacterPopin" "Welcome to tjsj.dev. As you can see, there's not much to see."}}
-          {{template "randomCharacterPopin" "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now..."}}
+          {{template "randomcharacters" "Welcome to tjsj.dev. As you can see, there's not much to see."}}
+          {{template "randomcharacters" "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now..."}}
         </fieldset>
 
         <div>
           <fieldset class="home-panel" style="animation-delay: 400ms">
             <legend>Projects</legend>
-            <ul class="home-list">
-              <li style="animation-delay: 500ms">0x0000 <a href="https://bit.ly/3esFaph">Project 1</a></li>
-              <li style="animation-delay: 550ms">0x0004 <a href="https://bit.ly/3esFaph">Project 2</a></li>
-              <li style="animation-delay: 600ms">0x0008 <a href="https://bit.ly/3esFaph">Project 3</a></li>
-              <li style="animation-delay: 650ms">0x000C <a href="https://bit.ly/3esFaph">Project 4</a></li>
-            </ul>
+            {{template "hexlist" dict "StartDelay" 500 "GapDelay" 100 "List" .ProjectsList}}
           </fieldset>
           <fieldset class="home-panel" style="animation-delay: 700ms">
             <legend>Recent Posts</legend>
-            <ul class="home-list">
-              <li style="animation-delay: 800ms">0x0000 <a href="https://bit.ly/3esFaph">Recent Post 1</a></li>
-              <li style="animation-delay: 850ms">0x0004 <a href="https://bit.ly/3esFaph">Recent Post 2</a></li>
-              <li style="animation-delay: 900ms">0x0008 <a href="https://bit.ly/3esFaph">Recent Post 3</a></li>
-              <li style="animation-delay: 950ms">0x000C <a href="https://bit.ly/3esFaph">Recent Post 4</a></li>
-            </ul>
+            {{template "hexlist" dict "StartDelay" 800 "GapDelay" 100 "List" .RecentPostsList}}
           </fieldset>
         </div>
 
@@ -38,15 +28,15 @@
 
       <fieldset class="home-panel home-split-container" style="animation-delay: 1000ms">
         <legend>Links</legend>
-        <ul class="home-list">
-          <li style="animation-delay: 1100ms">0x0000 email: tedjohnsonjs@gmail.com</li>
-          <li style="animation-delay: 1150ms">0x0004 phone: (+353) 87 103 4822</li>
-          <li style="animation-delay: 1200ms">0x0008 discord: tedski999#9999</li>
-        </ul>
-        <ul class="home-list">
-          <li style="animation-delay: 1300ms">0x000C <a href="https://github.com/tedski999">github page</a></li>
-          <li style="animation-delay: 1350ms">0x0010 <a href="https://github.com/tedski999">linkedin page</a></li>
-        </ul>
+        {{template "hexlist" dict "StartDelay" 1100 "GapDelay" 100 "List" (list
+          (toHTML "email: tedjohnsonjs@gmail.com")
+          (toHTML "phone: (+353) 87 103 4822")
+          (toHTML "discord: tedski999#9999")
+        )}}
+        {{template "hexlist" dict "StartDelay" 1300 "GapDelay" 100 "List" (list
+          (toHTML "<a href="https://github.com/tedski999">github page</a>")
+          (toHTML "<a href="https://github.com/tedski999">linkedin page</a>")
+        )}}
       </fieldset>
 
     </div>

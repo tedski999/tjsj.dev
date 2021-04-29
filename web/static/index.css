@@ -60,11 +60,11 @@ a:hover {
 }
 
 /* Hexidecimal styled lists */
-.home-list {
+.hexlist {
   padding: 0;
   list-style-type: none;
 }
-.home-list li {
+.hexlist li {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -49,6 +49,9 @@ a:hover {
   .home-split-container {
     display: flex;
   }
+  .home-split-container * {
+    overflow: hidden;
+  }
 }
 
 /* Fieldset panels */

@@ -13,7 +13,7 @@
           {{template "randomcharacters" "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now..."}}
         </fieldset>
 
-        <div>
+        <div class="home-split-container" style="flex-direction: column">
           <fieldset class="home-panel" style="animation-delay: 400ms">
             <legend>Projects</legend>
             {{template "hexlist" dict "StartDelay" 500 "GapDelay" 100 "List" .ProjectsList}}

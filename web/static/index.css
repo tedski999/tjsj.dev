@@ -1,59 +1,82 @@
 :root {
-  --primary-bg-color: black;
-  --primary-font-family: "Courier New", Courier, monospace;
-  --primary-text-color: red;
-  --primary-link-color: orange;
-  --primary-link-hover-color: yellow;
+  --bg-color: black;
+  --font-family: "Courier New", Courier, monospace;
+  --accent-color: red;
+  --link-color: orange;
+  --link-hover-color: yellow;
 }
 
 /* Common styling */
 body {
-  background-color: var(--primary-bg-color);
-  font-family: var(--primary-font-family);
-  color: var(--primary-text-color);
+  background-color: var(--bg-color);
+  font-family: var(--font-family);
+  color: var(--accent-color);
 }
 a {
-  color: var(--primary-link-color);
+  color: var(--link-color);
 }
 a:hover {
-  color: var(--primary-link-hover-color);
+  color: var(--link-hover-color);
 }
 
 /* Navigation bar */
 .topnav {
-  display: table;
-  table-layout: fixed;
-  width: 90%;
-  max-width: 50em;
-  margin: 0 auto 1.5em auto;
-  padding: 0;
-}
-.topnav li {
-  display: table-cell;
-  text-align: center;
-}
-
-/* Horizontal stretch limiting of the page content */
-.main {
-  width: 90%;
-  max-width: 75em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   margin: 0 auto;
   padding: 0;
+  max-width: 800px;
+  list-style-type: none;
+}
+.topnav li {
+  flex-basis: 10%;
+  padding: 0 .25em;
 }
 
+/* Home page container */
+.home {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+/* Home page layout */
+.home-split-container * {
+  flex: 1;
+  box-sizing: border-box;
+}
+@media (min-width: 800px) {
+  .home-split-container {
+    display: flex;
+  }
+}
+
+/* Fieldset panels */
 .home-panel {
-  padding: 0.5em 1em;
+  margin: 1em;
+  min-width: 0;
   border-style: double;
-  border-color: red;
+  border-color: var(--accent-color);
+}
+
+/* Hexidecimal styled lists */
+.home-list {
+  padding: 0;
+  list-style-type: none;
+}
+.home-list li {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* Ordered appearing elements */
 .ordered-popin * {
   visibility: hidden;
   animation: popin-animation;
-  animation-delay: calc(var(--animation-order) * 50ms);
   animation-fill-mode: forwards;
-  animation-duration: 0.1s;
+  animation-duration: 100ms;
+  animation-delay: inherit;
 }
 
 /* 'Randomly' appearing elements */
@@ -61,7 +84,7 @@ a:hover {
   visibility: hidden;
   animation: popin-animation;
   animation-fill-mode: forwards;
-  animation-duration: 0.1s;
+  animation-duration: 100ms;
 }
 .random-popin *:nth-of-type(1n+0) { animation-delay: 600ms; }
 .random-popin *:nth-of-type(3n+3) { animation-delay: 550ms; }
@@ -75,6 +98,7 @@ a:hover {
 .random-popin *:nth-of-type(8n+2) { animation-delay: 150ms; }
 .random-popin *:nth-of-type(9n+1) { animation-delay: 100ms; }
 
+/* Animation used for popping-in elements */
 @keyframes popin-animation {
   99% { visibility: hidden; }
   100% { visibility: visible; }
@@ -85,16 +109,16 @@ a:hover {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
   padding: 0 1em;
+  transform: translate(-50%, -50%);
+  font-family: monospace, var(--font-family);
+  text-align: center;
   border-style: double;
-  border-color: red;
-  font-family: monospace, var(--primary-font-family);
+  border-color: var(--accent-color);
   color: white;
 }
 .error-highlight {
-  color: red;
+  color: var(--accent-color);
 }
 
 /* "Under Construction" marquee at bottom of screen */

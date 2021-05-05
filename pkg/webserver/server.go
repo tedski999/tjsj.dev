@@ -4,10 +4,13 @@ import (
 	"net/http"
 	"sync"
 	"time"
+
 	"github.com/gorilla/mux"
-	"github.com/tedski999/tjsj.dev/pkg/webcontent"
+	"github.com/NYTimes/gziphandler"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/css"
+
+	"github.com/tedski999/tjsj.dev/pkg/webcontent"
 )
 
 type Server struct {
@@ -25,7 +28,7 @@ func Create(content *webcontent.Content, certFilePath, keyFilePath string) (*Ser
 	server := &Server {
 		http: &http.Server {
 			Addr: ":https",
-			Handler: router,
+			Handler: gziphandler.GzipHandler(router),
 			ReadTimeout: 10 * time.Second,
 			WriteTimeout: 10 * time.Second,
 			MaxHeaderBytes: 1 << 20,

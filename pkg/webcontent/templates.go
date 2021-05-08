@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"io/ioutil"
     "strings"
+	"fmt"
 	"errors"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/html"
@@ -47,6 +48,13 @@ func (content *Content) loadHTMLTemplates() error {
 		},
 		"toHTML": func(text template.HTML) template.HTML {
 			return text
+		},
+		"join": func(slice []interface{}, separator string) string {
+			strs := make([]string, len(slice))
+			for i, v := range slice {
+				strs[i] = fmt.Sprintf("%v", v)
+			}
+			return strings.Join(strs, separator)
 		},
 	})
 

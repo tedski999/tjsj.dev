@@ -5,6 +5,11 @@
     {{template "nav"}}
     <div class="home ordered-popin">
 
+      <div class="home-title" style="animation-delay: 0ms">
+        <img src="/title-art.png" alt="tjsj.dev title art">
+        {{template "randomcharacters" printf "\"%s\"" .SplashText}}
+      </div>
+
       <div class="home-split-container">
 
         <fieldset class="home-panel" style="animation-delay: 100ms">

@@ -40,6 +40,25 @@ a:hover {
   max-width: 1000px;
 }
 
+/* Home page title art and motd */
+.home-title {
+  padding-top: 2em;
+  text-align: center;
+  font-style: italic;
+}
+.home-title img {
+  width: 80%;
+  height: auto;
+  max-width: 500px;
+  image-rendering: pixelated;
+  animation: clipping-reveal 1s steps(3, start);
+  visibility: visible;
+}
+@keyframes clipping-reveal {
+  0% { clip-path: inset(0 0 100% 0); }
+  100% { clip-path: inset(0); }
+}
+
 /* Home page layout */
 .home-split-container * {
   flex: 1;

@@ -14,7 +14,7 @@ func (server *Server) trimWWWRequests(next http.Handler) http.Handler {
 		if strings.HasPrefix(r.Host, "www.") {
 			u := *r.URL
 			u.Host = strings.TrimPrefix(r.Host, "www.")
-			http.Redirect(w, r, u.String(), http.StatusFound)
+			http.Redirect(w, r, u.String(), http.StatusMovedPermanently)
 			return
 		}
 

@@ -12,11 +12,23 @@ body {
   font-family: var(--font-family);
   color: var(--accent-color);
 }
+
+/* Animated links */
 a {
+  text-decoration: none;
   color: var(--link-color);
+  background-image: linear-gradient(var(--link-color), var(--link-color));
+  background-position: 0 90%;
+  background-size: 100% .05em;
+  background-repeat: no-repeat;
+  transition-property: color background-size;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0,.5,0,1);
 }
 a:hover {
-  color: var(--link-hover-color);
+  text-decoration: none;
+  color: var(--bg-color);
+  background-size: 100% 1.1em;
 }
 
 /* Navigation bar */
@@ -79,6 +91,15 @@ a:hover {
   min-width: 0;
   border-style: double;
   border-color: var(--accent-color);
+}
+@media (min-width: 800px) {
+  .home-panel {
+    box-sizing: border-box;
+    transition: padding 200ms;
+  }
+  .home-panel:hover {
+    padding: .5em 1.25em;
+  }
 }
 
 /* Hexidecimal styled lists */

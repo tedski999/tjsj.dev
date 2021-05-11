@@ -38,6 +38,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  text-align: center;
   margin: 0 auto;
   padding: 0;
   max-width: 800px;

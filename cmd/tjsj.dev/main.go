@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 	"github.com/tedski999/tjsj.dev/pkg/webserver"
 	"github.com/tedski999/tjsj.dev/pkg/webstats"
 	"github.com/tedski999/tjsj.dev/pkg/webcontent"
@@ -34,7 +35,7 @@ func main() {
 	sigChan := make(chan os.Signal, 1)
 	errChan := make(chan error)
 	exitChan := make(chan bool, 1)
-	signal.Notify(sigChan, os.Interrupt, os.Kill)
+	signal.Notify(sigChan, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
 
 	// Start the web server
 	log.Println("Starting web server...")

@@ -10,20 +10,20 @@
         {{template "randomcharacters" printf "\"%s\"" .SplashText}}
       </div>
 
-      <div class="home-split-container">
+      <div class="split-container">
 
-        <fieldset class="home-panel" style="animation-delay: 100ms">
+        <fieldset class="panel" style="animation-delay: 100ms">
           <legend>Welcome</legend>
           {{template "randomcharacters" "Welcome to tjsj.dev. As you can see, there's not much to see."}}
           {{template "randomcharacters" "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now..."}}
         </fieldset>
 
-        <div class="home-split-container" style="flex-direction: column">
-          <fieldset class="home-panel" style="animation-delay: 400ms">
+        <div class="split-container" style="flex-direction: column">
+          <fieldset class="panel" style="animation-delay: 400ms">
             <legend>Featured Projects</legend>
             {{template "hexlist" dict "StartDelay" 500 "GapDelay" 100 "List" .ProjectsList}}
           </fieldset>
-          <fieldset class="home-panel" style="animation-delay: 700ms">
+          <fieldset class="panel" style="animation-delay: 700ms">
             <legend>Recent Posts</legend>
             {{template "hexlist" dict "StartDelay" 800 "GapDelay" 100 "List" .RecentPostsList}}
           </fieldset>
@@ -31,7 +31,7 @@
 
       </div>
 
-      <fieldset class="home-panel home-split-container" style="animation-delay: 1000ms">
+      <fieldset class="panel split-container" style="animation-delay: 1000ms">
         <legend>Links</legend>
         {{template "hexlist" dict "StartDelay" 1100 "GapDelay" 100 "List" (list
           (toHTML "email: tedjohnsonjs@gmail.com")

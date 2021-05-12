@@ -22,6 +22,14 @@ func (server *Server) trimWWWRequests(next http.Handler) http.Handler {
 	})
 }
 
+// Middleware to record data about every request made to the server
+func (server *Server) recordRequestData(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server.stats.IncrementHitCounter()
+		next.ServeHTTP(w, r)
+	})
+}
+
 // Middleware to serve static files if found
 func (server *Server) serveStaticFiles(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

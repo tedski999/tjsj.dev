@@ -5,10 +5,14 @@ import (
 	"os"
 	"os/signal"
 	"github.com/tedski999/tjsj.dev/pkg/webserver"
+	"github.com/tedski999/tjsj.dev/pkg/webstats"
 	"github.com/tedski999/tjsj.dev/pkg/webcontent"
 )
 
 func main() {
+
+	// Start/Resume web server statistics
+	stats, err := webstats.Create("./data/stats.bin")
 
 	// Load all web content
 	log.Println("Loading web content...")
@@ -20,7 +24,7 @@ func main() {
 
 	// Create a new web server
 	log.Println("Creating web server...")
-	server, err := webserver.Create(content, "./web/certs/fullchain.pem", "./web/certs/privkey.pem")
+	server, err := webserver.Create(content, stats, "./web/certs/fullchain.pem", "./web/certs/privkey.pem")
 	if err != nil {
 		log.Println("An error occurred while creating the web server:\n" + err.Error())
 		return
@@ -32,11 +36,13 @@ func main() {
 	exitChan := make(chan bool, 1)
 	signal.Notify(sigChan, os.Interrupt, os.Kill)
 
-	// Start the content manager and web server
+	// Start the web server
 	log.Println("Starting web server...")
+	stats.Start(errChan)
 	server.Start(errChan)
 	log.Println("Web server listening on :443")
 
+	// Exception handling
 	go func() {
 		for {
 			// Wait for either a signal or an error
@@ -56,5 +62,6 @@ func main() {
 	<-exitChan
 	log.Println("Stopping web server...")
 	server.Stop()
+	stats.Stop()
 	log.Println("Goodbye!")
 }

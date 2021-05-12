@@ -12,6 +12,11 @@ type homeResponseData struct {
 	RecentPostsList []template.HTML
 }
 
+type statsResponseData struct {
+	TotalHits int
+	Uptime string
+}
+
 // General method for executing HTML templates by name
 func (server *Server) executeHTMLTemplate(w http.ResponseWriter, templateName string, data interface{}) {
 	template := server.content.GetHTMLTemplate(templateName)
@@ -48,6 +53,16 @@ func (server *Server) postResponse(w http.ResponseWriter, r *http.Request) {
 	//postID := vars["id"]
 	// TODO: find the post
 	server.errorResponse(w, r, http.StatusNotFound)
+}
+
+// Respond with the statistics page
+func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
+	data := statsResponseData {
+		server.stats.GetTotalHits(),
+		server.stats.GetUptime(),
+	}
+
+	server.executeHTMLTemplate(w, "stats.html", data)
 }
 
 // Respond with the error page with an appropriate message

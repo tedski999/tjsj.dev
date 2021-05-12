@@ -11,17 +11,19 @@ import (
 	"github.com/tdewolff/minify/v2/css"
 
 	"github.com/tedski999/tjsj.dev/pkg/webcontent"
+	"github.com/tedski999/tjsj.dev/pkg/webstats"
 )
 
 type Server struct {
 	http *http.Server
 	certFilePath, keyFilePath string
 	content *webcontent.Content
+	stats *webstats.Statistics
 	doneWG sync.WaitGroup
 	errChan chan<- error
 }
 
-func Create(content *webcontent.Content, certFilePath, keyFilePath string) (*Server, error) {
+func Create(content *webcontent.Content, stats *webstats.Statistics, certFilePath, keyFilePath string) (*Server, error) {
 
 	// Setup server
 	router := mux.NewRouter()
@@ -36,6 +38,7 @@ func Create(content *webcontent.Content, certFilePath, keyFilePath string) (*Ser
 		certFilePath: certFilePath,
 		keyFilePath:keyFilePath,
 		content: content,
+		stats: stats,
 	}
 
 	// Setup the CSS minifier middleware
@@ -47,8 +50,10 @@ func Create(content *webcontent.Content, certFilePath, keyFilePath string) (*Ser
 	router.HandleFunc("/", server.homeResponse)
 	router.HandleFunc("/posts/", server.postsResponse)
 	router.HandleFunc("/posts/{id}", server.postResponse)
+	router.HandleFunc("/stats", server.statsResponse)
 	router.Use(minifier.Middleware)
 	router.Use(server.trimWWWRequests)
+	router.Use(server.recordRequestData)
 	router.Use(server.serveStaticFiles)
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		server.errorResponse(w, r, 404)

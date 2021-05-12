@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  {{template "head" list "Stats"}}
+  <body>
+    {{template "nav"}}
+    <div class="stats ordered-popin">
+      <fieldset class="panel ordered-popin">
+        <legend>Website Stats</legend>
+        {{template "hexlist" dict "StartDelay" 0 "GapDelay" 100 "List" (list
+          (printf "Total hits: %d" .TotalHits)
+          (printf "Uptime: %s" .Uptime)
+        )}}
+      </fieldset>
+    </div>
+  </body>
+</html>

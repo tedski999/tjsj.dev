@@ -22,11 +22,28 @@ func (server *Server) trimWWWRequests(next http.Handler) http.Handler {
 	})
 }
 
-// Middleware to record data about every request made to the server
+// Middleware to record data about every OK request made to the server
+type statusWriter struct {
+	http.ResponseWriter
+	status, length int
+}
+func (w *statusWriter) Write(b []byte) (int, error) {
+	if w.status == 0 { w.status = 200 }
+	n, err := w.ResponseWriter.Write(b)
+	w.length += n
+	return n, err
+}
+func (w *statusWriter) WriteHeader(status int) {
+	w.status = status
+	w.ResponseWriter.WriteHeader(status)
+}
 func (server *Server) recordRequestData(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		server.stats.IncrementHitCounter()
-		next.ServeHTTP(w, r)
+		sw := statusWriter { ResponseWriter: w }
+		next.ServeHTTP(&sw, r)
+		if sw.status >= 200 && sw.status < 300 {
+			server.stats.RecordRequest(r)
+		}
 	})
 }
 

@@ -51,13 +51,14 @@ func Create(content *webcontent.Content, stats *webstats.Statistics, certFilePat
 	router.HandleFunc("/posts/", server.postsResponse)
 	router.HandleFunc("/posts/{id}", server.postResponse)
 	router.HandleFunc("/stats", server.statsResponse)
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server.errorResponse(w, r, http.StatusNotFound)
+	})
+
 	router.Use(minifier.Middleware)
 	router.Use(server.trimWWWRequests)
-	router.Use(server.recordRequestData)
 	router.Use(server.serveStaticFiles)
-	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		server.errorResponse(w, r, 404)
-	})
+	router.Use(server.recordRequestData)
 
 	return server, nil
 }

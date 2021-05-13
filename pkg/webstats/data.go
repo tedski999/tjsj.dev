@@ -1,12 +1,21 @@
 package webstats
 
 import (
+	"os"
 	"time"
 	"net/http"
 	"net/url"
 	"sort"
 	"strings"
+	"runtime"
 )
+
+type SystemStats struct {
+	Hostname, OS, Arch, Uptime string
+	CPUCount, CPUUsage int
+	GoroutineCount int
+	RAMAvailable, RAMUsage uint64
+}
 
 // Record data from a new request
 func (stats *Statistics) RecordRequest(r *http.Request) {
@@ -37,6 +46,33 @@ func (stats *Statistics) GetReferrerCounters() (map[string]int, []string) {
 // Return the time since this stats object was started
 func (stats *Statistics) GetUptime() string {
 	return time.Now().Sub(stats.startTime).Round(time.Millisecond).String()
+}
+
+// Return statistics of current system
+func (stats *Statistics) GetSystemStats() SystemStats {
+
+	// Hostname
+	hostname, err := os.Hostname()
+	if err != nil {
+		hostname = "<Unknown>"
+	}
+
+	// Memory
+	var memStats runtime.MemStats
+	runtime.ReadMemStats(&memStats)
+
+	// TODO: uptime and cpu usage
+	return SystemStats {
+		Hostname: hostname,
+		OS: runtime.GOOS,
+		Arch: runtime.GOARCH,
+		Uptime: "<Unknown>",
+		CPUCount: runtime.NumCPU(),
+		RAMAvailable: memStats.Sys,
+		CPUUsage: 0,
+		RAMUsage: memStats.Alloc,
+		GoroutineCount: runtime.NumGoroutine(),
+	}
 }
 
 // Return map m keys ordered by map m values

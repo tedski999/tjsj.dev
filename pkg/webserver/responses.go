@@ -53,6 +53,7 @@ func (server *Server) postResponse(w http.ResponseWriter, r *http.Request) {
 
 // Respond with the statistics page
 func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
+	statsLists := [2][]string{}
 
 	// Hit counters
 	hitCounters, hitCountersOrder := server.stats.GetHitCounters()
@@ -78,11 +79,8 @@ func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Generate the formatted stats list
-	statsLists := [][]string {
-		make([]string, 0, 5 + len(topURLsList) + len(topReferrersList)),
-		make([]string, 0, 8),
-	}
+	// Request stats list
+	statsLists[0] = make([]string, 0, 5 + len(topURLsList) + len(topReferrersList))
 	statsLists[0] = append(statsLists[0], fmt.Sprintf("Total website hits: %d", totalHitCounts))
 	statsLists[0] = append(statsLists[0], "")
 	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d URLs:", len(topURLsList)))
@@ -90,14 +88,22 @@ func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 	statsLists[0] = append(statsLists[0], "")
 	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d referrers:", len(topReferrersList)))
 	statsLists[0] = append(statsLists[0], topReferrersList...)
-	statsLists[1] = append(statsLists[1], "Architecture: ") // TODO
-	statsLists[1] = append(statsLists[1], "Operating system: ") // TODO
-	statsLists[1] = append(statsLists[1], "")
-	statsLists[1] = append(statsLists[1], "CPU usage: XX%") // TODO
-	statsLists[1] = append(statsLists[1], "MEM usage: XX%") // TODO
-	statsLists[1] = append(statsLists[1], "Allocated RAM: 0kB") // TODO
-	statsLists[1] = append(statsLists[1], "")
-	statsLists[1] = append(statsLists[1], "Uptime: " + server.stats.GetUptime())
+
+	// System stats list
+	sysstats := server.stats.GetSystemStats()
+	statsLists[1] = []string {
+		"Server: " + sysstats.Hostname,
+		"Platform: " + sysstats.OS + "/" + sysstats.Arch,
+		"",
+		fmt.Sprintf("CPU usage: %d%% (%d cores)", sysstats.CPUUsage, sysstats.CPUCount),
+		fmt.Sprintf("RAM usage: %s (%s available)",
+			bytesToHumanReadable(sysstats.RAMUsage),
+			bytesToHumanReadable(sysstats.RAMAvailable)),
+		fmt.Sprintf("Active Goroutines: %d", sysstats.GoroutineCount),
+		"",
+		"Server Uptime: " + server.stats.GetUptime(),
+		"System Uptime: " + sysstats.Uptime,
+	}
 
 	// Execute HTML template response
 	server.executeHTMLTemplate(w, "stats.html", statsLists)
@@ -108,4 +114,20 @@ func (server *Server) errorResponse(w http.ResponseWriter, r *http.Request, code
 	w.WriteHeader(code)
 	data := struct { Code int; Message string } { code, http.StatusText(code) }
 	server.executeHTMLTemplate(w, "error.html", data)
+}
+
+// Convert bytes to an approprate magnitude
+func bytesToHumanReadable(bytes uint64) string {
+	if bytes < 1000 {
+		return fmt.Sprintf("%dB", bytes);
+	}
+
+	magnitude := 0
+	prefixes := []byte{'k','M','G','T','P','E'}
+	for bytes >= 999950 && magnitude < len(prefixes) {
+		bytes /= 1000;
+		magnitude++
+	}
+
+	return fmt.Sprintf("%.1f%cB", float64(bytes) / 1000.0, prefixes[magnitude]);
 }

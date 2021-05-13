@@ -3,6 +3,7 @@ package webserver
 import (
 	"net/http"
 	"html/template"
+	"fmt"
 	"errors"
 )
 
@@ -10,11 +11,6 @@ type homeResponseData struct {
 	SplashText string
 	ProjectsList []template.HTML
 	RecentPostsList []template.HTML
-}
-
-type statsResponseData struct {
-	TotalHits int
-	Uptime string
 }
 
 // General method for executing HTML templates by name
@@ -57,12 +53,54 @@ func (server *Server) postResponse(w http.ResponseWriter, r *http.Request) {
 
 // Respond with the statistics page
 func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
-	data := statsResponseData {
-		server.stats.GetTotalHits(),
-		server.stats.GetUptime(),
+
+	// Hit counters
+	hitCounters, hitCountersOrder := server.stats.GetHitCounters()
+	totalHitCounts := 0
+	topURLsList := []string{}
+	for _, url := range hitCountersOrder {
+		totalHitCounts += hitCounters[url]
+		if len(topURLsList) < 10 {
+			topURLsList = append(
+				topURLsList,
+				fmt.Sprintf("| %d hits: %s\n", hitCounters[url], url))
+		}
 	}
 
-	server.executeHTMLTemplate(w, "stats.html", data)
+	// Referrer counters
+	referrerCounters, referrerCountersOrder := server.stats.GetReferrerCounters()
+	topReferrersList := []string{}
+	for _, referrer := range referrerCountersOrder {
+		if len(topReferrersList) < 10 {
+			topReferrersList = append(
+				topReferrersList,
+				fmt.Sprintf("| %d referees: %s\n", referrerCounters[referrer], referrer))
+		}
+	}
+
+	// Generate the formatted stats list
+	statsLists := [][]string {
+		make([]string, 0, 5 + len(topURLsList) + len(topReferrersList)),
+		make([]string, 0, 8),
+	}
+	statsLists[0] = append(statsLists[0], fmt.Sprintf("Total website hits: %d", totalHitCounts))
+	statsLists[0] = append(statsLists[0], "")
+	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d URLs:", len(topURLsList)))
+	statsLists[0] = append(statsLists[0], topURLsList...)
+	statsLists[0] = append(statsLists[0], "")
+	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d referrers:", len(topReferrersList)))
+	statsLists[0] = append(statsLists[0], topReferrersList...)
+	statsLists[1] = append(statsLists[1], "Architecture: ") // TODO
+	statsLists[1] = append(statsLists[1], "Operating system: ") // TODO
+	statsLists[1] = append(statsLists[1], "")
+	statsLists[1] = append(statsLists[1], "CPU usage: XX%") // TODO
+	statsLists[1] = append(statsLists[1], "MEM usage: XX%") // TODO
+	statsLists[1] = append(statsLists[1], "Allocated RAM: 0kB") // TODO
+	statsLists[1] = append(statsLists[1], "")
+	statsLists[1] = append(statsLists[1], "Uptime: " + server.stats.GetUptime())
+
+	// Execute HTML template response
+	server.executeHTMLTemplate(w, "stats.html", statsLists)
 }
 
 // Respond with the error page with an appropriate message
@@ -71,4 +109,3 @@ func (server *Server) errorResponse(w http.ResponseWriter, r *http.Request, code
 	data := struct { Code int; Message string } { code, http.StatusText(code) }
 	server.executeHTMLTemplate(w, "error.html", data)
 }
-

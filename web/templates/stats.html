@@ -4,12 +4,10 @@
   <body>
     {{template "nav"}}
     <div class="stats ordered-popin">
-      <fieldset class="panel ordered-popin">
+      <fieldset class="panel ordered-popin split-container">
         <legend>Website Stats</legend>
-        {{template "hexlist" dict "StartDelay" 0 "GapDelay" 100 "List" (list
-          (printf "Total hits: %d" .TotalHits)
-          (printf "Uptime: %s" .Uptime)
-        )}}
+        {{template "hexlist" dict "StartDelay" 0 "GapDelay" 50 "List" (index . 0)}}
+        {{template "hexlist" dict "StartDelay" 0 "GapDelay" 50 "List" (index . 1)}}
       </fieldset>
     </div>
   </body>

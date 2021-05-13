@@ -7,7 +7,8 @@ import (
 )
 
 type statsFileData struct {
-	TotalHits int
+	HitCounters map[string]int
+	ReferrerCounters map[string]int
 }
 
 // Attempt to load stats from disk
@@ -32,7 +33,8 @@ func (stats *Statistics) Load() {
 	}
 
 	// Convert data to stats
-	stats.totalHits = data.TotalHits
+	stats.hitCounters = data.HitCounters
+	stats.referrerCounters = data.ReferrerCounters
 }
 
 // Attempt to save stats to disk
@@ -40,7 +42,8 @@ func (stats *Statistics) Save() {
 
 	// Convert stats to data
 	data := statsFileData {
-		TotalHits: stats.totalHits,
+		HitCounters: stats.hitCounters,
+		ReferrerCounters: stats.referrerCounters,
 	}
 
 	// Create the file

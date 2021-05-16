@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/tedski999/tjsj.dev/pkg/webstats"
 )
 
 // Middleware to trim any requests prefixed with "www."
@@ -22,28 +24,21 @@ func (server *Server) trimWWWRequests(next http.Handler) http.Handler {
 	})
 }
 
-// Middleware to record data about every OK request made to the server
-type statusWriter struct {
-	http.ResponseWriter
-	status, length int
-}
-func (w *statusWriter) Write(b []byte) (int, error) {
-	if w.status == 0 { w.status = 200 }
-	n, err := w.ResponseWriter.Write(b)
-	w.length += n
-	return n, err
-}
-func (w *statusWriter) WriteHeader(status int) {
-	w.status = status
-	w.ResponseWriter.WriteHeader(status)
-}
-func (server *Server) recordRequestData(next http.Handler) http.Handler {
+// Middleware to record data about requests and responses
+func (server *Server) recordData(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		sw := statusWriter { ResponseWriter: w }
+		sw := webstats.StatsResponseWriter{ ResponseWriter: w }
 		next.ServeHTTP(&sw, r)
-		if sw.status >= 200 && sw.status < 300 {
-			server.stats.RecordRequest(r)
-		}
+		server.stats.RecordData(&sw, r)
+	})
+}
+
+// Middleware to record size of response data after GZip compression
+func (server *Server) recordCompressedData(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		sw := webstats.StatsResponseWriter{ ResponseWriter: w }
+		next.ServeHTTP(&sw, r)
+		server.stats.RecordCompressedData(&sw, r)
 	})
 }
 

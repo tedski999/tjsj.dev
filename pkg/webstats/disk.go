@@ -9,6 +9,9 @@ import (
 type statsFileData struct {
 	HitCounters map[string]int
 	ReferrerCounters map[string]int
+	ResponseCodeCounters map[int]int
+	TotalUncompressedDataTransferred uint64
+	TotalCompressedDataTransferred uint64
 }
 
 // Attempt to load stats from disk
@@ -35,6 +38,9 @@ func (stats *Statistics) Load() {
 	// Convert data to stats
 	stats.hitCounters = data.HitCounters
 	stats.referrerCounters = data.ReferrerCounters
+	stats.responseCodeCounters = data.ResponseCodeCounters
+	stats.totalUncompressedDataTransferred = data.TotalUncompressedDataTransferred
+	stats.totalCompressedDataTransferred = data.TotalCompressedDataTransferred
 }
 
 // Attempt to save stats to disk
@@ -44,6 +50,9 @@ func (stats *Statistics) Save() {
 	data := statsFileData {
 		HitCounters: stats.hitCounters,
 		ReferrerCounters: stats.referrerCounters,
+		ResponseCodeCounters: stats.responseCodeCounters,
+		TotalUncompressedDataTransferred: stats.totalUncompressedDataTransferred,
+		TotalCompressedDataTransferred: stats.totalCompressedDataTransferred,
 	}
 
 	// Create the file

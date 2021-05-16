@@ -30,7 +30,7 @@ func Create(content *webcontent.Content, stats *webstats.Statistics, certFilePat
 	server := &Server {
 		http: &http.Server {
 			Addr: ":https",
-			Handler: gziphandler.GzipHandler(router),
+			Handler: router,
 			ReadTimeout: 10 * time.Second,
 			WriteTimeout: 10 * time.Second,
 			MaxHeaderBytes: 1 << 20,
@@ -55,10 +55,12 @@ func Create(content *webcontent.Content, stats *webstats.Statistics, certFilePat
 		server.errorResponse(w, r, http.StatusNotFound)
 	})
 
+	router.Use(server.recordCompressedData)
+	router.Use(gziphandler.GzipHandler)
 	router.Use(minifier.Middleware)
+	router.Use(server.recordData)
 	router.Use(server.trimWWWRequests)
 	router.Use(server.serveStaticFiles)
-	router.Use(server.recordRequestData)
 
 	return server, nil
 }

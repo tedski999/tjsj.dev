@@ -55,6 +55,10 @@ func (server *Server) postResponse(w http.ResponseWriter, r *http.Request) {
 func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 	statsLists := [2][]string{}
 
+	// Total data transferred
+	totalCompressedDataTransferred, totalUncompressedDataTransferred := server.stats.GetTotalDataTransferred()
+	compressionRatio := float64(totalCompressedDataTransferred) / float64(totalUncompressedDataTransferred)
+
 	// Hit counters
 	hitCounters, hitCountersOrder := server.stats.GetHitCounters()
 	totalHitCounts := 0
@@ -79,8 +83,23 @@ func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Response code counters
+	responseCodeCounters, responseCodeCountersOrder := server.stats.GetResponseCodeCounters()
+	topResponseCodesList := []string{}
+	for _, responseCode := range responseCodeCountersOrder {
+		if len(topResponseCodesList) < 10 {
+			topResponseCodesList = append(
+				topResponseCodesList,
+				fmt.Sprintf(
+					"| %d responses: %d - %s\n",
+					responseCodeCounters[responseCode],
+					responseCode,
+					http.StatusText(responseCode)))
+		}
+	}
+
 	// Request stats list
-	statsLists[0] = make([]string, 0, 5 + len(topURLsList) + len(topReferrersList))
+	statsLists[0] = make([]string, 0, 7 + len(topURLsList) + len(topReferrersList) + len(topResponseCodesList))
 	statsLists[0] = append(statsLists[0], fmt.Sprintf("Total website hits: %d", totalHitCounts))
 	statsLists[0] = append(statsLists[0], "")
 	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d URLs:", len(topURLsList)))
@@ -88,6 +107,9 @@ func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 	statsLists[0] = append(statsLists[0], "")
 	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d referrers:", len(topReferrersList)))
 	statsLists[0] = append(statsLists[0], topReferrersList...)
+	statsLists[0] = append(statsLists[0], "")
+	statsLists[0] = append(statsLists[0], fmt.Sprintf("Top %d response codes:", len(topResponseCodesList)))
+	statsLists[0] = append(statsLists[0], topResponseCodesList...)
 
 	// System stats list
 	sysstats := server.stats.GetSystemStats()
@@ -100,6 +122,10 @@ func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 			bytesToHumanReadable(sysstats.RAMUsage),
 			bytesToHumanReadable(sysstats.RAMAvailable)),
 		fmt.Sprintf("Active Goroutines: %d", sysstats.GoroutineCount),
+		"",
+		fmt.Sprintf("Total transferred: %s", bytesToHumanReadable(totalCompressedDataTransferred)),
+		fmt.Sprintf("Before compression: %s", bytesToHumanReadable(totalUncompressedDataTransferred)),
+		fmt.Sprintf("Avg. compression ratio: %f", compressionRatio),
 		"",
 		"Server Uptime: " + server.stats.GetUptime(),
 		"System Uptime: " + sysstats.Uptime,

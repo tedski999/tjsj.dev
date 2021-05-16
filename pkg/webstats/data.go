@@ -18,12 +18,16 @@ type SystemStats struct {
 }
 
 // Record data from a new request
-func (stats *Statistics) RecordRequest(r *http.Request) {
+func (stats *Statistics) RecordData(w *StatsResponseWriter, r *http.Request) {
+	stats.recordDataMutex.Lock()
+	defer stats.recordDataMutex.Unlock()
 
-	// Add to appropriate hit counter
-	path := strings.TrimSuffix(r.URL.Path, "/")
-	if len(path) == 0 { path = "/" }
-	stats.hitCounters[path]++;
+	// Add to appropriate hit counter if the response code was OK
+	if w.status == http.StatusOK {
+		path := strings.TrimSuffix(r.URL.Path, "/")
+		if len(path) == 0 { path = "/" }
+		stats.hitCounters[path]++;
+	}
 
 	// Add to appropriate referrer counter
 	if url, err := url.Parse(r.Referer()); err == nil {
@@ -31,6 +35,17 @@ func (stats *Statistics) RecordRequest(r *http.Request) {
 		if len(hostname) == 0 { hostname = "<direct>" }
 		stats.referrerCounters[hostname]++;
 	}
+
+	// Record response data
+	stats.responseCodeCounters[w.status]++
+	stats.totalUncompressedDataTransferred += uint64(w.length)
+}
+
+// Record data after compression from a new request
+func (stats *Statistics) RecordCompressedData(w *StatsResponseWriter, r *http.Request) {
+	stats.recordDataMutex.Lock()
+	defer stats.recordDataMutex.Unlock()
+	stats.totalCompressedDataTransferred += uint64(w.length)
 }
 
 // Return an list of the top pages by hits
@@ -43,9 +58,19 @@ func (stats *Statistics) GetReferrerCounters() (map[string]int, []string) {
 	return stats.referrerCounters, sortStringIntMapByValue(stats.referrerCounters)
 }
 
+// Return an list of the top response codes by number of responses
+func (stats *Statistics) GetResponseCodeCounters() (map[int]int, []int) {
+	return stats.responseCodeCounters, sortIntIntMapByValue(stats.responseCodeCounters)
+}
+
 // Return the time since this stats object was started
 func (stats *Statistics) GetUptime() string {
 	return time.Now().Sub(stats.startTime).Round(time.Millisecond).String()
+}
+
+// Return the total number of bytes responded with
+func (stats *Statistics) GetTotalDataTransferred() (uint64, uint64) {
+	return stats.totalCompressedDataTransferred, stats.totalUncompressedDataTransferred
 }
 
 // Return statistics of current system
@@ -78,6 +103,18 @@ func (stats *Statistics) GetSystemStats() SystemStats {
 // Return map m keys ordered by map m values
 func sortStringIntMapByValue(m map[string]int) []string {
 	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		return m[keys[i]] > m[keys[j]]
+	})
+	return keys
+}
+
+// Return map m keys ordered by map m values
+func sortIntIntMapByValue(m map[int]int) []int {
+	keys := make([]int, 0, len(m))
 	for k := range m {
 		keys = append(keys, k)
 	}

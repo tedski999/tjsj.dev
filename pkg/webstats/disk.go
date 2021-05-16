@@ -20,9 +20,7 @@ func (stats *Statistics) Load() {
 	// Open the file
 	dataFile, err := os.Open(stats.dataFilePath)
 	if err != nil  {
-		if !os.IsNotExist(err) {
-			stats.errChan <- err
-		}
+		stats.errChan <- err
 		return
 	}
 	defer dataFile.Close()

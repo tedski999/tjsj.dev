@@ -1,6 +1,19 @@
 {{define "head"}}
 <head>
-  <title>{{join . " - "}} - tjsj.dev</title>
+  {{if .SubtitlesList}}
+    {{$subtitles := join .SubtitlesList " - "}}
+    <title>{{$subtitles}} - tjsj.dev</title>
+  {{else}}
+    <title>tjsj.dev</title>
+  {{end}}
+  {{if .Description}}
+    {{$description := .Description}}
+    <meta name="description" content="{{$description}}">
+  {{end}}
+  {{if .KeywordsList}}
+    {{$keywords := join .KeywordsList ", "}}
+    <meta name="keywords" content="{{$keywords}}">
+  {{end}}
   <link rel="stylesheet" href="/index.css">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">

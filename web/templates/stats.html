@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
-  {{template "head" list "Stats"}}
+  {{
+    template "head" dict
+    "SubtitlesList" (list "Website Statistics")
+    "Description" "Real-time overview of the recorded statistics of this website. No cookies allowed!"
+    "KeywordsList" (list "Computer Science" "Game Development" "Portfolio" "Statistics")
+  }}
   <body>
     {{template "nav"}}
     <div class="stats ordered-popin">

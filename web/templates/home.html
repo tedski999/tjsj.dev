@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
-  {{template "head" list "Home"}}
+  {{
+    template "head" dict
+    "SubtitlesList" (list "Home")
+    "Description" "Computer Scientist, Game Designer and Web Developer. Guaranteed free from JavaScript!"
+    "KeywordsList" (list "Computer Science" "Game Development" "Portfolio")
+  }}
   <body>
     {{template "nav"}}
     <div class="home ordered-popin">

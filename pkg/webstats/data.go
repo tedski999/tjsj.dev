@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strings"
 	"runtime"
+	"io/ioutil"
 )
 
 type SystemStats struct {
@@ -86,12 +87,11 @@ func (stats *Statistics) GetSystemStats() SystemStats {
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
 
-	// TODO: uptime and cpu usage
 	return SystemStats {
 		Hostname: hostname,
 		OS: runtime.GOOS,
 		Arch: runtime.GOARCH,
-		Uptime: "<Unknown>",
+		Uptime: readSystemUptime(),
 		CPUCount: runtime.NumCPU(),
 		RAMAvailable: memStats.Sys,
 		CPUUsage: 0,
@@ -122,4 +122,23 @@ func sortIntIntMapByValue(m map[int]int) []int {
 		return m[keys[i]] > m[keys[j]]
 	})
 	return keys
+}
+
+// Parse system uptime from a Linux system
+func readSystemUptime() string {
+
+	// Open uptime file
+	b, err := ioutil.ReadFile("/proc/uptime")
+	if err != nil {
+		return "<Unknown>"
+	}
+
+	// Parse uptime from file
+	uptime, err := time.ParseDuration(strings.Fields(string(b))[0] + "s")
+	if err != nil {
+		return "<Unknown>"
+	}
+
+	// Return a formatted string
+	return uptime.Round(time.Millisecond).String()
 }

@@ -13,6 +13,11 @@ type homeResponseData struct {
 	RecentPostsList []template.HTML
 }
 
+type statsResponseData struct {
+	StatsLists [2][]string
+	StatsStartDatetime string
+}
+
 // General method for executing HTML templates by name
 func (server *Server) executeHTMLTemplate(w http.ResponseWriter, templateName string, data interface{}) {
 	template := server.content.GetHTMLTemplate(templateName)
@@ -132,7 +137,10 @@ func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Execute HTML template response
-	server.executeHTMLTemplate(w, "stats.html", statsLists)
+	server.executeHTMLTemplate(w, "stats.html", statsResponseData {
+		statsLists,
+		server.stats.GetStatsStartDatetime(),
+	})
 }
 
 // Respond with the error page with an appropriate message

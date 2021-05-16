@@ -6,7 +6,7 @@ import "time"
 func (stats *Statistics) Start(errChan chan<- error) {
 	stats.errChan = errChan
 	go stats.Load()
-	stats.startTime = time.Now()
+	stats.serverStartTime = time.Now()
 }
 
 // Gracefully shutdown the statistics recording

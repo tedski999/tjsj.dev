@@ -4,6 +4,7 @@ import (
 	"os"
 	"encoding/gob"
 	"path/filepath"
+	"time"
 )
 
 type statsFileData struct {
@@ -12,6 +13,7 @@ type statsFileData struct {
 	ResponseCodeCounters map[int]int
 	TotalUncompressedDataTransferred uint64
 	TotalCompressedDataTransferred uint64
+	StatsStartDatetime time.Time
 }
 
 // Attempt to load stats from disk
@@ -20,6 +22,7 @@ func (stats *Statistics) Load() {
 	// Open the file
 	dataFile, err := os.Open(stats.dataFilePath)
 	if err != nil  {
+		stats.statsStartDatetime = time.Now()
 		stats.errChan <- err
 		return
 	}
@@ -39,6 +42,7 @@ func (stats *Statistics) Load() {
 	stats.responseCodeCounters = data.ResponseCodeCounters
 	stats.totalUncompressedDataTransferred = data.TotalUncompressedDataTransferred
 	stats.totalCompressedDataTransferred = data.TotalCompressedDataTransferred
+	stats.statsStartDatetime = data.StatsStartDatetime
 }
 
 // Attempt to save stats to disk
@@ -51,6 +55,7 @@ func (stats *Statistics) Save() {
 		ResponseCodeCounters: stats.responseCodeCounters,
 		TotalUncompressedDataTransferred: stats.totalUncompressedDataTransferred,
 		TotalCompressedDataTransferred: stats.totalCompressedDataTransferred,
+		StatsStartDatetime: stats.statsStartDatetime,
 	}
 
 	// Create the file

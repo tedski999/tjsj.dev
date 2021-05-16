@@ -12,7 +12,8 @@ type Statistics struct {
 	responseCodeCounters map[int]int
 	totalUncompressedDataTransferred uint64
 	totalCompressedDataTransferred uint64
-	startTime time.Time
+	serverStartTime time.Time
+	statsStartDatetime time.Time
 	recordDataMutex sync.Mutex
 	errChan chan<- error
 }

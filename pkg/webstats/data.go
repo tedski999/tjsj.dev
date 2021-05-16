@@ -66,7 +66,12 @@ func (stats *Statistics) GetResponseCodeCounters() (map[int]int, []int) {
 
 // Return the time since this stats object was started
 func (stats *Statistics) GetUptime() string {
-	return time.Now().Sub(stats.startTime).Round(time.Millisecond).String()
+	return time.Now().Sub(stats.serverStartTime).Round(time.Millisecond).String()
+}
+
+// Return the datetime these stats have been since
+func (stats *Statistics) GetStatsStartDatetime() string {
+	return stats.statsStartDatetime.Format("Jan 2 2006")
 }
 
 // Return the total number of bytes responded with

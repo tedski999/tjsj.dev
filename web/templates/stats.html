@@ -9,10 +9,13 @@
   <body>
     {{template "nav"}}
     <div class="stats ordered-popin">
-      <fieldset class="panel ordered-popin split-container">
+      <fieldset class="panel">
         <legend>Website Stats</legend>
-        {{template "hexlist" dict "StartDelay" 0 "GapDelay" 50 "List" (index . 0)}}
-        {{template "hexlist" dict "StartDelay" 0 "GapDelay" 50 "List" (index . 1)}}
+        <div class="split-container">
+          {{template "hexlist" dict "StartDelay" 0 "GapDelay" 50 "List" (index .StatsLists 0)}}
+          {{template "hexlist" dict "StartDelay" 0 "GapDelay" 50 "List" (index .StatsLists 1)}}
+        </div>
+        {{template "randomcharacters" (printf "Recording commenced %s" .StatsStartDatetime)}}
       </fieldset>
     </div>
   </body>

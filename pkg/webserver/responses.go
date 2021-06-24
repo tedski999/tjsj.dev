@@ -41,6 +41,22 @@ func (server *Server) homeResponse(w http.ResponseWriter, r *http.Request) {
 	server.executeHTMLTemplate(w, "home.html", data)
 }
 
+// Respond with a list of projects in the HTML template "projects.html"
+func (server *Server) projectsResponse(w http.ResponseWriter, r *http.Request) {
+	// TODO: get list of projects metadata
+	//server.executeHTMLTemplate(w, "projects.html", nil)
+	server.errorResponse(w, r, http.StatusNotFound)
+}
+
+// Respond with the project page of the id given in the URL
+func (server *Server) projectResponse(w http.ResponseWriter, r *http.Request) {
+	//vars := mux.Vars(r)
+	//id := vars["id"]
+	// TODO: find the project
+	//server.executeHTMLTemplate(w, "project.html", nil)
+	server.errorResponse(w, r, http.StatusNotFound)
+}
+
 // Respond with a list of posts in the HTML template "posts.html"
 func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of posts metadata
@@ -51,8 +67,20 @@ func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 // Respond with the post page of the id given in the URL
 func (server *Server) postResponse(w http.ResponseWriter, r *http.Request) {
 	//vars := mux.Vars(r)
-	//postID := vars["id"]
+	//id := vars["id"]
 	// TODO: find the post
+	//server.executeHTMLTemplate(w, "post.html", nil)
+	server.errorResponse(w, r, http.StatusNotFound)
+}
+
+// Respond with a list of pages matching the users search criteria
+func (server *Server) searchResponse(w http.ResponseWriter, r *http.Request) {
+	//v := r.URL.Query()
+	//tags := v.Get("tags")
+	//type := v.Get("type")
+	// TODO: other queries
+	// TODO: perform search
+	//server.executeHTMLTemplate(w, "search.html", nil)
 	server.errorResponse(w, r, http.StatusNotFound)
 }
 

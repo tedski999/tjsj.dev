@@ -48,8 +48,11 @@ func Create(content *webcontent.Content, stats *webstats.Statistics, certFilePat
 	// Setup HTTP route multiplexing
 	router.StrictSlash(true)
 	router.HandleFunc("/", server.homeResponse)
+	router.HandleFunc("/projects/", server.postsResponse)
+	router.HandleFunc("/projects/{id}", server.projectResponse)
 	router.HandleFunc("/posts/", server.postsResponse)
 	router.HandleFunc("/posts/{id}", server.postResponse)
+	router.HandleFunc("/search", server.searchResponse)
 	router.HandleFunc("/stats", server.statsResponse)
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		server.errorResponse(w, r, http.StatusNotFound)

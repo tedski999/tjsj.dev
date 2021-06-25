@@ -73,17 +73,6 @@ func (server *Server) postResponse(w http.ResponseWriter, r *http.Request) {
 	server.errorResponse(w, r, http.StatusNotFound)
 }
 
-// Respond with a list of pages matching the users search criteria
-func (server *Server) searchResponse(w http.ResponseWriter, r *http.Request) {
-	//v := r.URL.Query()
-	//tags := v.Get("tags")
-	//type := v.Get("type")
-	// TODO: other queries
-	// TODO: perform search
-	//server.executeHTMLTemplate(w, "search.html", nil)
-	server.errorResponse(w, r, http.StatusNotFound)
-}
-
 // Respond with the statistics page
 func (server *Server) statsResponse(w http.ResponseWriter, r *http.Request) {
 	statsLists := [2][]string{}

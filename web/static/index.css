@@ -89,22 +89,22 @@ a:hover {
   }
   .split-container * {
     overflow: hidden;
+    }
   }
-}
 
 /* Mobile-friendly fieldset panels */
-.panel {
+fieldset {
   margin: 1em;
   min-width: 0;
   border-style: double;
   border-color: var(--accent-color);
 }
 @media (min-width: 800px) {
-  .panel {
+  fieldset {
     box-sizing: border-box;
     transition: padding 200ms;
   }
-  .panel:hover {
+  fieldset:hover {
     padding: .5em 1.25em;
   }
 }

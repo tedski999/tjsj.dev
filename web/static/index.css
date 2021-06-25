@@ -49,8 +49,8 @@ a:hover {
   padding: 0 .25em;
 }
 
-/* Home page container */
-.home {
+/* Main content container */
+.main {
   margin: 0 auto;
   max-width: 1000px;
 }
@@ -73,12 +73,6 @@ a:hover {
 @keyframes clipping-reveal {
   0% { clip-path: inset(0 0 100% 0); }
   100% { clip-path: inset(0); }
-}
-
-/* Stats page container */
-.stats {
-  margin: 0 auto;
-  max-width: 1000px;
 }
 
 /* Mobile-friendly split container layout */

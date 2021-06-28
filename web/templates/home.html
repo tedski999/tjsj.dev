@@ -2,14 +2,24 @@
 <html lang="en">
  {{
     template "head" dict
-    "SubtitlesList" (list "Home")
-    "Description" "Computer Scientist, Game Designer and Web Developer. Guaranteed free from JavaScript!"
+    "Description" "Ted Johnson's personal homepage. Computer scientist, game designer and web developer. You can find my work and projects here, as well as links to any social media I shouldn't have joined."
     "KeywordsList" (list "tedski999" "Ted Johnson" "Computer Science" "Game Development" "Portfolio")
   }}
   <body>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "url": "https://tjsj.dev",
+        "logo": "https://tjsj.dev/logo.png"
+      }
+    </script>
+
     <header>
       {{template "nav"}}
     </header>
+
     <div class="main ordered-popin">
 
       <div class="home-title" style="animation-delay: 0ms">

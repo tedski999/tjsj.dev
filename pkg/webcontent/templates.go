@@ -32,6 +32,9 @@ func (content *Content) loadHTMLTemplates() error {
 		"add": func(a, b int) int {
 			return a + b
 		},
+		"mul": func(a, b int) int {
+			return a * b
+		},
 		"split": func(text string) []string {
 			return strings.Split(text, "")
 		},

@@ -1,12 +1,11 @@
 {{define "hexlist"}}
 <ul class="hexlist">
-  {{$delay := .StartDelay}}
-  {{$gapDelay := .GapDelay}}
+  {{$s := .StartDelay}}
+  {{$g := .GapDelay}}
   {{range $index, $item := .List}}
-    <li style="animation-delay: {{$delay}}ms">{{printf "0x%04X" (mul $index 4)}} {{$item}}</li>
-    {{$delay = add $delay $gapDelay}}
+    <li style="animation-delay: {{add $s (mul $g $index)}}ms">{{printf "0x%04X" (mul $index 4)}} {{$item}}</li>
   {{else}}
-    <li style="animation-delay: {{$delay}}ms">Nothing available</li>
+    <li style="animation-delay: {{.StartDelay}}ms">Nothing available</li>
   {{end}}
 </ul>
 {{end}}

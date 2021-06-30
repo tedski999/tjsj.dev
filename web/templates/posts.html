@@ -44,10 +44,12 @@
             {{$monthquery := .MonthQuery}}
             {{range $year, $months := .YearList}}
               <li class="dropdown-menu">
-                <a href="?y={{$year}}" {{if eq $yearquery $year}}class="hover"{{end}}>{{$year}}</a>
+                <a class="hide-on-touch {{if eq $yearquery $year}}hover{{end}}" href="?y={{$year}}">{{$year}}</a>
+                <a class="hide-on-mouse {{if eq $yearquery $year}}hover{{end}}">{{$year}}</a>
                 <ul class="dropdown-content ordered-popin">
+                  <li class="hide-on-mouse" style="margin-bottom: 0.5em"><a href="?y={{$year}}" class="{{if eq $yearquery $year}}{{if not $monthquery}}hover{{end}}{{end}}">All</a></li>
                   {{range $index, $month := $months}}
-                  <li style="animation-delay: {{mul $index 50}}ms"><a href="?y={{$year}}&m={{index $month 1}}" {{if eq $yearquery $year}}{{if eq $monthquery (index $month 1)}}class="hover"{{end}}{{end}}>{{index $month 0}}</a></li>
+                    <li style="animation-delay: {{mul $index 50}}ms"><a href="?y={{$year}}&m={{index $month 1}}" {{if eq $yearquery $year}}{{if eq $monthquery (index $month 1)}}class="hover"{{end}}{{end}}>{{index $month 0}}</a></li>
                   {{end}}
                 </ul>
               </li>

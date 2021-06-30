@@ -24,7 +24,7 @@ a {
     color 100ms cubic-bezier(0,.5,0,1),
     background-size 200ms cubic-bezier(0,.5,0,1);
 }
-a:hover, a.hover {
+a:hover, a.hover, .dropdown-menu:hover > a {
   text-decoration: none;
   color: var(--bg-color);
   background-size: 100% 1.1em;
@@ -257,6 +257,16 @@ form input:focus {
 }
 @media (max-width: 799px) {
   .hide-on-mobile {
+    display: none;
+  }
+}
+@media (hover: hover) {
+  .hide-on-mouse {
+    display: none;
+  }
+}
+@media (hover: none) {
+  .hide-on-touch {
     display: none;
   }
 }

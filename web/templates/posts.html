@@ -12,31 +12,63 @@
       {{template "nav"}}
     </header>
 
-    <div class="main ordered-popin split-container">
+    <div class="main split-container">
 
-      <div>
+      <div style="position: relative; z-index: 1;">
         <fieldset>
           <legend>Filter</legend>
           <form>
-            <input type="text" placeholder="Search..." />
-            <!-- TODO Tag checkboxes -->
-            <button>Go</button>
+            {{if .YearQuery}}
+              <input type="hidden" name="y" value={{.YearQuery}}>
+            {{end}}
+            {{if .MonthQuery}}
+              <input type="hidden" name="m" value={{.MonthQuery}}>
+            {{end}}
+            <input type="text" maxlength="50" name="s" placeholder="Search..." style="width: 95%" value="{{.SearchQuery}}" /><br>
+            <br>
+            <ul class="horizontal-list">
+              {{range $tag, $checked := .TagList}}
+                <li><label><input type="checkbox" name="t" value="{{$tag}}" {{if $checked}}checked{{end}}/>{{$tag}}</label></li>
+              {{else}}
+                <li>No tags available</li>
+              {{end}}
+            </ul>
+            <br>
+            <input type="submit" value="Filter" />
           </form>
         </fieldset>
-
         <fieldset>
           <legend>Dates</legend>
-          <!-- TODO Years > Months > Days -->
+          <ul class="horizontal-list">
+            {{$yearquery := .YearQuery}}
+            {{$monthquery := .MonthQuery}}
+            {{range $year, $months := .YearList}}
+              <li class="dropdown-menu">
+                <a href="?y={{$year}}" {{if eq $yearquery $year}}class="hover"{{end}}>{{$year}}</a>
+                <ul class="dropdown-content ordered-popin">
+                  {{range $index, $month := $months}}
+                  <li style="animation-delay: {{mul $index 50}}ms"><a href="?y={{$year}}&m={{index $month 1}}" {{if eq $yearquery $year}}{{if eq $monthquery (index $month 1)}}class="hover"{{end}}{{end}}>{{index $month 0}}</a></li>
+                  {{end}}
+                </ul>
+              </li>
+            {{else}}
+              <li>No dates available</li>
+            {{end}}
+          </ul>
         </fieldset>
       </div>
 
       <fieldset style="flex: 2">
         <legend>Posts</legend>
-        <!--{{template "hexlist" dict "StartDelay" 100 "GapDelay" 100 "List" .PostList}}-->
-        <ul class="hexlist">
-          <li>hello</li>
-          <li>hi</li>
-          <li>wwwwwwowwwwwwwww</li>
+        <ul class="post-list ordered-popin">
+          {{range $index, $post := .PostList}}
+            <li style="animation-delay: {{add 100 (mul $index 50)}}ms">
+              <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{joinstr $post.Tags " - "}}">{{$post.Title}}</a>
+              <p style="margin-top: 0;" class="hide-on-desktop">{{$post.Date}}</p>
+            </li>
+          {{else}}
+            <li style="animation-delay: 100ms">No posts found</li>
+          {{end}}
         </ul>
       </fieldset>
 

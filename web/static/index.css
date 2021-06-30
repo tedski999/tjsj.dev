@@ -112,12 +112,71 @@ fieldset {
   }
 }
 
-/* Hexadecimal styled lists */
-.hexlist {
-  padding: 0;
-  list-style-type: none;
+/* Form styling */
+form input {
+  background: var(--bg-color);
+  border-color: var(--accent-color);
+  font-size: 0.9em;
+  padding: 0.25em;
+  color: var(--accent-color);
 }
-.hexlist li {
+form input::placeholder {
+  color: var(--accent-color);
+  opacity: 0.8;
+}
+form input:focus {
+  outline: none !important;
+  border-color: var(--accent-color);
+}
+
+/* Space li horizontally */
+.horizontal-list {
+  margin: 0;
+}
+.horizontal-list > li {
+  display: inline-block;
+  margin: 0.1em 0.5em;
+}
+
+/* Drop down menus */
+.dropdown-menu {
+  position: relative;
+}
+.dropdown-menu .dropdown-content {
+  display: none;
+  position: absolute;
+  top: 1em;
+  padding: 0.5em;
+  background-color: var(--bg-color);
+  border-style: solid;
+  border-color: var(--link-color);
+}
+.dropdown-menu:hover {
+  z-index: 1;
+}
+.dropdown-menu:hover .dropdown-content {
+  display: block;
+}
+
+/* The list of posts */
+@media (max-width: 799px) {
+  .post-list {
+    padding-left: 1em;
+  }
+  .post-list li::marker {
+    content: "# ";
+  }
+}
+@media (min-width: 800px) {
+  .post-list li {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Hexadecimal styled lists */
+.hexlist, .hexlist li {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

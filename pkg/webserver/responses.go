@@ -7,11 +7,30 @@ import (
 	"errors"
 )
 
+type postMetadata struct {
+	Date string
+	Title string
+	Tags []string
+	ID string
+}
+
 type homeResponseData struct {
 	SplashText string
 	ProjectsList []template.HTML
 	RecentPostsList []template.HTML
 }
+
+type postsResponseData struct {
+	SearchQuery, MonthQuery, YearQuery string
+	TagList map[string]bool
+	YearList map[string][][2]string
+	PostList []postMetadata
+}
+type postsResponseDataYearList struct {
+	Name string
+	MonthList []string
+}
+
 
 type statsResponseData struct {
 	StatsLists [2][]string
@@ -32,13 +51,11 @@ func (server *Server) executeHTMLTemplate(w http.ResponseWriter, templateName st
 // Respond with the HTML template "home.html"
 func (server *Server) homeResponse(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of recent posts metadata
-	data := homeResponseData {
+	server.executeHTMLTemplate(w, "home.html", homeResponseData {
 		server.content.GetRandomSplashText(),
 		nil,
 		nil,
-	}
-
-	server.executeHTMLTemplate(w, "home.html", data)
+	})
 }
 
 // Respond with a list of projects in the HTML template "projects.html"
@@ -59,9 +76,42 @@ func (server *Server) projectResponse(w http.ResponseWriter, r *http.Request) {
 
 // Respond with a list of posts in the HTML template "posts.html"
 func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
-	// TODO: get list of posts metadata
-	server.executeHTMLTemplate(w, "posts.html", nil)
-	// server.errorResponse(w, r, http.StatusNotFound)
+
+	// Retrieve search query
+	searchQuery := r.URL.Query().Get("s")
+	monthQuery := r.URL.Query().Get("m")
+	yearQuery := r.URL.Query().Get("y")
+	tagsQuery := r.URL.Query()["t"]
+
+	// TODO: get list of posts metadata filtered by queries
+	// NOTE: below is an example response
+	postList := []postMetadata {
+		{ "2021-06-28", "Web Dev Shenanigans",                    []string {"Project","Web Dev","Go" }, "web-dev-shenanigans" },
+		{ "2021-06-22", "a",                                      []string {"Game Dev","C/C++" },       "a" },
+		{ "2021-06-04", "Another post title which is quite long", nil,                  "another-post-tite-which-is-quite-long" },
+		{ "2021-06-04", "This title is obnoxiously long just to show off what happens to those who defy me",
+		   nil,"this-title-is-obnoxiously-long-just-to-show-off-what-happens-to-those-who-defy-me" },
+		{ "2021-05-11", "Hello World",                            []string {"Casual"},                  "hello-world" },
+	}
+
+	// TODO: get all the possible search queries
+	// NOTE: below is an example response
+	allTags := []string {"Project","Web Dev","Game Dev","Go","C/C++","Python","Java"}
+	allDates := map[string][][2]string {
+		"2021": {{"January","1"},{"March","3"},{"April","4"},{"June","8"}},
+		"2020": {{"May","5"},{"June","6"},{"August","8"},{"November","11"},{"December","12"}},
+	}
+
+	// Mark every tag that is part of the query
+	tagMap := make(map[string]bool)
+	for _, tag := range allTags {
+		tagMap[tag] = isStringInSlice(tag, tagsQuery)
+	}
+
+	server.executeHTMLTemplate(w, "posts.html", postsResponseData {
+		searchQuery, monthQuery, yearQuery,
+		tagMap, allDates, postList,
+	})
 }
 
 // Respond with the post page of the id given in the URL
@@ -182,3 +232,14 @@ func bytesToHumanReadable(bytes uint64) string {
 
 	return fmt.Sprintf("%.1f%cB", float64(bytes) / 1000.0, prefixes[magnitude]);
 }
+
+// Determine if a string is within a slice
+func isStringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+

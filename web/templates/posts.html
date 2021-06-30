@@ -24,7 +24,7 @@
             {{if .MonthQuery}}
               <input type="hidden" name="m" value={{.MonthQuery}}>
             {{end}}
-            <input type="text" maxlength="50" name="s" placeholder="Search..." style="width: 95%" value="{{.SearchQuery}}" /><br>
+            <input type="search" maxlength="50" name="s" placeholder="Search..." style="width: 95%" value="{{.SearchQuery}}" /><br>
             <br>
             <ul class="horizontal-list">
               {{range $tag, $checked := .TagList}}

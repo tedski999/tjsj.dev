@@ -21,8 +21,8 @@ a {
   background-size: 100% .05em;
   background-repeat: no-repeat;
   transition:
-    color 100ms cubic-bezier(0,.5,0,1),
-    background-size 200ms cubic-bezier(0,.5,0,1);
+    color 200ms cubic-bezier(0,.5,0,1),
+    background-size 300ms cubic-bezier(0,.5,0,1);
 }
 a:hover, a.hover, .dropdown-menu:hover > a {
   text-decoration: none;
@@ -116,9 +116,36 @@ fieldset {
 form input {
   background: var(--bg-color);
   border-color: var(--accent-color);
+  font-family: var(--font-family);
   font-size: 0.9em;
   padding: 0.25em;
   color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+}
+form input[type=search] {
+  border: none;
+  border-bottom: 2px solid var(--accent-color);
+}
+form input[type=submit] {
+  color: var(--link-color);
+  border-color: var(--link-color);
+  background-image: linear-gradient(var(--link-color), var(--link-color));
+  background-size: 100% 0;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding: 0.25em;
+  margin: 0;
+  transition:
+    padding 700ms cubic-bezier(0,.5,0,1),
+    margin 700ms cubic-bezier(0,.5,0,1),
+    color 200ms cubic-bezier(0,.5,0,1),
+    background-size 300ms cubic-bezier(0,.5,0,1);
+}
+form input[type=submit]:hover {
+  background-size: 100% 1.4em;
+  padding: 0.1em;
+  margin: 0.15em;
+  color: var(--bg-color);
 }
 form input::placeholder {
   color: var(--accent-color);
@@ -126,7 +153,6 @@ form input::placeholder {
 }
 form input:focus {
   outline: none !important;
-  border-color: var(--accent-color);
 }
 
 /* Space li horizontally */

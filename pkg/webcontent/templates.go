@@ -59,6 +59,9 @@ func (content *Content) loadHTMLTemplates() error {
 			}
 			return strings.Join(strs, separator)
 		},
+		"joinstr": func(slice []string, separator string) string {
+			return strings.Join(slice, separator)
+		},
 	})
 
 	// Minify every file before adding it to the templates

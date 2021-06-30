@@ -24,10 +24,16 @@ a {
     color 100ms cubic-bezier(0,.5,0,1),
     background-size 200ms cubic-bezier(0,.5,0,1);
 }
-a:hover {
+a:hover, a.hover {
   text-decoration: none;
   color: var(--bg-color);
   background-size: 100% 1.1em;
+}
+
+/* Plain unordered lists */
+ul {
+  padding: 0;
+  list-style-type: none;
 }
 
 /* Navigation bar */
@@ -40,9 +46,7 @@ a:hover {
   justify-content: space-around;
   text-align: center;
   margin: 0 auto;
-  padding: 0;
   max-width: 800px;
-  list-style-type: none;
 }
 .topnav li {
   flex-basis: 10%;
@@ -76,10 +80,6 @@ a:hover {
 }
 
 /* Mobile-friendly split container layout */
-.split-container * {
-  flex: 1;
-  box-sizing: border-box;
-}
 @media (min-width: 800px) {
   .split-container {
     display: -webkit-box;
@@ -87,10 +87,11 @@ a:hover {
     display: -webkit-flex;
     display: flex;
   }
-  .split-container * {
-    overflow: hidden;
-    }
+  .split-container > * {
+    flex: 1;
+    box-sizing: border-box;
   }
+}
 
 /* Mobile-friendly fieldset panels */
 fieldset {
@@ -102,10 +103,12 @@ fieldset {
 @media (min-width: 800px) {
   fieldset {
     box-sizing: border-box;
-    transition: padding 200ms;
+    transition: margin 200ms, padding 200ms;
+    padding: 1em;
   }
   fieldset:hover {
-    padding: .5em 1.25em;
+    margin: 1.40em;
+    padding: 0.60em;
   }
 }
 
@@ -120,28 +123,13 @@ fieldset {
   text-overflow: ellipsis;
 }
 
-/* Ordered appearing elements */
-.ordered-popin * {
+/* Individually appearing elements */
+.ordered-popin *, .random-popin * {
   opacity: 0%;
   -webkit-animation: popin-animation;
   -webkit-animation-fill-mode: forwards;
-  -webkit-animation-duration: 100ms;
-  -webkit-animation-delay: inherit;
   animation: popin-animation;
   animation-fill-mode: forwards;
-  animation-duration: 100ms;
-  animation-delay: inherit;
-}
-
-/* 'Randomly' appearing elements */
-.random-popin * {
-  opacity: 0%;
-  -webkit-animation: popin-animation;
-  -webkit-animation-fill-mode: forwards;
-  -webkit-animation-duration: 100ms;
-  animation: popin-animation;
-  animation-fill-mode: forwards;
-  animation-duration: 100ms;
 }
 .random-popin *:nth-of-type(1n+0) { -webkit-animation-delay: 600ms; animation-delay: 600ms; }
 .random-popin *:nth-of-type(3n+3) { -webkit-animation-delay: 550ms; animation-delay: 550ms; }
@@ -199,5 +187,17 @@ fieldset {
     -webkit-transform: translate(-100%, 0);
     -ms-transform: translate(-100%, 0);
     transform: translate(-100%, 0);
+  }
+}
+
+/* Generic responsive classes */
+@media (min-width: 800px) {
+  .hide-on-desktop {
+    display: none;
+  }
+}
+@media (max-width: 799px) {
+  .hide-on-mobile {
+    display: none;
   }
 }

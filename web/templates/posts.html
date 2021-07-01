@@ -25,10 +25,9 @@
               <input type="hidden" name="m" value={{.MonthQuery}}>
             {{end}}
             <input type="search" maxlength="50" name="s" placeholder="Search..." style="width: 95%" value="{{.SearchQuery}}" /><br>
-            <br>
             <ul class="horizontal-list">
               {{range $tag, $checked := .TagList}}
-                <li><label><input type="checkbox" name="t" value="{{$tag}}" {{if $checked}}checked{{end}}/>{{$tag}}</label></li>
+                <li><label><input type="checkbox" name="t" value="{{$tag}}" {{if $checked}}checked{{end}}/><span></span>{{$tag}}</label></li>
               {{else}}
                 <li>No tags available</li>
               {{end}}

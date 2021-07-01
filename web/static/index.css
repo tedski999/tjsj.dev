@@ -113,12 +113,13 @@ fieldset {
 }
 
 /* Form styling */
+form label {
+  font: 0.9em var(--font-family);
+}
 form input {
   background: var(--bg-color);
   border-color: var(--accent-color);
-  font-family: var(--font-family);
-  font-size: 0.9em;
-  padding: 0.25em;
+  font: 0.9em var(--font-family);
   color: var(--accent-color);
   border: 2px solid var(--accent-color);
 }
@@ -153,6 +154,39 @@ form input::placeholder {
 }
 form input:focus {
   outline: none !important;
+}
+
+/* Better checkboxes */
+form input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  margin: 0.95em 0;
+}
+form input[type="checkbox"] + span:before {
+  content: "\a0";
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--accent-color);
+  transition:
+    top 100ms, right 100ms,
+    width 100ms, height 100ms,
+    margin-right 100ms;
+}
+input[type="checkbox"]:hover + span:before {
+  top: 3px;
+  right: 3px;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+}
+input[type="checkbox"]:checked + span:before {
+  background-color: var(--accent-color);
 }
 
 /* Space li horizontally */

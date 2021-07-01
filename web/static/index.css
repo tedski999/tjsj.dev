@@ -90,6 +90,7 @@ ul {
   .split-container > * {
     flex: 1;
     box-sizing: border-box;
+    min-width: 0;
   }
 }
 
@@ -224,7 +225,7 @@ input[type="checkbox"]:checked + span:before {
     padding-left: 1em;
   }
   .post-list li::marker {
-    content: "# ";
+    content: "x ";
   }
 }
 @media (min-width: 800px) {
@@ -232,6 +233,9 @@ input[type="checkbox"]:checked + span:before {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .home-post-list {
+    margin: 0;
   }
 }
 

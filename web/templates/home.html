@@ -42,7 +42,16 @@
           </fieldset>
           <fieldset style="animation-delay: 700ms">
             <legend>Recent Posts</legend>
-            {{template "hexlist" dict "StartDelay" 800 "GapDelay" 100 "List" .RecentPostsList}}
+            <ul class="home-post-list post-list">
+              {{range $index, $post := .PostList}}
+                <li style="animation-delay: {{add 800 (mul $index 100)}}ms">
+                  <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{joinstr $post.Tags " - "}}">{{$post.Title}}</a>
+                  <p style="margin-top: 0;" class="hide-on-desktop">{{$post.Date}}</p>
+                </li>
+              {{else}}
+                <li style="animation-delay: 100ms">No posts found</li>
+              {{end}}
+            </ul>
           </fieldset>
         </div>
 

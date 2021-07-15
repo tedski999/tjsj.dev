@@ -45,7 +45,7 @@
             <ul class="home-post-list post-list">
               {{range $index, $post := .PostList}}
                 <li style="animation-delay: {{add 800 (mul $index 100)}}ms">
-                  <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{joinstr $post.Tags " - "}}">{{$post.Title}}</a>
+                  <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{join $post.Tags " - "}}">{{$post.Title}}</a>
                   <p style="margin-top: 0;" class="hide-on-desktop">{{$post.Date}}</p>
                 </li>
               {{else}}
@@ -59,21 +59,20 @@
 
       <fieldset class="split-container" style="animation-delay: 1000ms">
         <legend>Links</legend>
-        {{template "hexlist" dict "StartDelay" 1100 "GapDelay" 100 "List" (list
-          (toHTML "Email: tedjohnsonjs@gmail.com")
-          (toHTML "Phone: (+353) 87 103 4822")
-          (toHTML "Discord: tedski999#3759")
-          (toHTML "Steam: tedski999")
-          (toHTML "TCD ID: 19335618")
-        )}}
-        {{template "hexlist" dict "StartDelay" 1300 "GapDelay" 100 "List" (list
-          (toHTML "<a href="https://github.com/tedski999" title="View&nbsp;all&nbsp;my&nbsp;programming&nbsp;projects&nbsp;on&nbsp;GitHub">GitHub Page</a>")
-          (toHTML "<a href="https://www.linkedin.com/in/ted-johnson" title="View&nbsp;my&nbsp;professional&nbsp;history&nbsp;on&nbsp;LinkedIn">LinkedIn Page</a>")
-          (toHTML "<a href="/pgp-public-key.txt" title="Download&nbsp;my&nbsp;public&nbsp;PGP&nbsp;key">PGP Public Key</a>")
-          (toHTML "<a href="/ssh-public-key.txt" title="Download&nbsp;this&nbsp;servers&nbsp;public&nbsp;SSH&nbsp;key">SSH Public Key</a>")
-          (toHTML "<a href="/geekcode.txt" title="Decode&nbsp;my&nbsp;geekcode">geekcode</a>")
-
-        )}}
+        {{template "hexlist" dict "StartDelay" 1100 "GapDelay" 100 "List" (toHTMLList (list
+          "Email: tedjohnsonjs@gmail.com"
+          "Phone: (+353) 87 103 4822"
+          "Discord: tedski999#3759"
+          "Steam: tedski999"
+          "TCD ID: 19335618"
+        ))}}
+        {{template "hexlist" dict "StartDelay" 1300 "GapDelay" 100 "List" (toHTMLList (list
+          "<a href="https://github.com/tedski999" title="View&nbsp;all&nbsp;my&nbsp;programming&nbsp;projects&nbsp;on&nbsp;GitHub">GitHub Page</a>"
+          "<a href="https://www.linkedin.com/in/ted-johnson" title="View&nbsp;my&nbsp;professional&nbsp;history&nbsp;on&nbsp;LinkedIn">LinkedIn Page</a>"
+          "<a href="/pgp-public-key.txt" title="Download&nbsp;my&nbsp;public&nbsp;PGP&nbsp;key">PGP Public Key</a>"
+          "<a href="/ssh-public-key.txt" title="Download&nbsp;this&nbsp;servers&nbsp;public&nbsp;SSH&nbsp;key">SSH Public Key</a>"
+          "<a href="/geekcode.txt" title="Decode&nbsp;my&nbsp;geekcode">geekcode</a>"
+        ))}}
       </fieldset>
 
     </div>

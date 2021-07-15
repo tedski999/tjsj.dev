@@ -2,10 +2,15 @@ package webserver
 
 import (
 	"net/http"
-	"html/template"
 	"fmt"
 	"errors"
 )
+
+type projectMetadata struct {
+	Title string
+	Tags []string
+	ID string
+}
 
 type postMetadata struct {
 	Date string
@@ -16,7 +21,7 @@ type postMetadata struct {
 
 type homeResponseData struct {
 	SplashText string
-	ProjectsList []template.HTML
+	ProjectsList []projectMetadata
 	PostList []postMetadata
 }
 
@@ -30,7 +35,6 @@ type postsResponseDataYearList struct {
 	Name string
 	MonthList []string
 }
-
 
 type statsResponseData struct {
 	StatsLists [2][]string

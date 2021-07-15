@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"io/ioutil"
     "strings"
-	"fmt"
 	"errors"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/html"
@@ -29,15 +28,11 @@ func (content *Content) loadHTMLTemplates() error {
 	// Add util functions for templates
 	content.htmlTemplates = template.New("")
 	content.htmlTemplates.Funcs(template.FuncMap{
-		"add": func(a, b int) int {
-			return a + b
-		},
-		"mul": func(a, b int) int {
-			return a * b
-		},
-		"split": func(text string) []string {
-			return strings.Split(text, "")
-		},
+		"add": func(a, b int) int { return a + b },
+		"mul": func(a, b int) int { return a * b },
+		"split": func(text string) []string { return strings.Split(text, "") },
+		"join": func(slice []string, separator string) string { return strings.Join(slice, separator) },
+		"list": func(list ...string) []string { return list },
 		"dict": func(keyvalues ...interface{}) map[string]interface{} {
 			dict := make(map[string]interface{}, len(keyvalues) / 2)
 			for i := 0; i < len(keyvalues); i += 2 {
@@ -46,21 +41,15 @@ func (content *Content) loadHTMLTemplates() error {
 			}
 			return dict
 		},
-		"list": func(list ...interface{}) []interface{} {
-			return list
+		"toHTML": func(text string) template.HTML {
+			return template.HTML(text)
 		},
-		"toHTML": func(text template.HTML) template.HTML {
-			return text
-		},
-		"join": func(slice []interface{}, separator string) string {
-			strs := make([]string, len(slice))
+		"toHTMLList": func(slice []string) []template.HTML {
+			list := make([]template.HTML, len(slice))
 			for i, v := range slice {
-				strs[i] = fmt.Sprintf("%v", v)
+				list[i] = template.HTML(v)
 			}
-			return strings.Join(strs, separator)
-		},
-		"joinstr": func(slice []string, separator string) string {
-			return strings.Join(slice, separator)
+			return list
 		},
 	})
 

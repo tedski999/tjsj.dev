@@ -1,18 +1,15 @@
 {{define "head"}}
 <head>
   {{if .SubtitlesList}}
-    {{$subtitles := join .SubtitlesList " - "}}
-    <title>{{$subtitles}} - tjsj.dev</title>
+    <title>{{join .SubtitlesList " - "}} - tjsj.dev</title>
   {{else}}
     <title>tjsj.dev</title>
   {{end}}
   {{if .Description}}
-    {{$description := .Description}}
-    <meta name="description" content="{{$description}}">
+    <meta name="description" content="{{.Description}}">
   {{end}}
   {{if .KeywordsList}}
-    {{$keywords := join .KeywordsList ", "}}
-    <meta name="keywords" content="{{$keywords}}">
+    <meta name="keywords" content="{{join .KeywordsList ","}}">
   {{end}}
   {{if .NoIndex}}
     <meta name="robots" content="noindex">

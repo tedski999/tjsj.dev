@@ -64,7 +64,7 @@
         <ul class="post-list ordered-popin">
           {{range $index, $post := .PostList}}
             <li style="animation-delay: {{add 100 (mul $index 50)}}ms">
-              <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{joinstr $post.Tags " - "}}">{{$post.Title}}</a>
+              <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{join $post.Tags " - "}}">{{$post.Title}}</a>
               <p style="margin-top: 0;" class="hide-on-desktop">{{$post.Date}}</p>
             </li>
           {{else}}

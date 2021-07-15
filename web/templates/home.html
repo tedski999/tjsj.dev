@@ -24,21 +24,30 @@
 
       <div class="home-title" style="animation-delay: 0ms">
         <img src="/title-art.png" alt="tjsj.dev title art" width="26" height="3">
-        {{template "randomcharacters" printf "\"%s\"" .SplashText}}
+        <p class="random-popin">{{range split (printf "\"%s\"" .SplashText)}}<span>{{.}}</span>{{end}}</p>
       </div>
 
       <div class="split-container">
 
         <fieldset style="animation-delay: 100ms">
           <legend>Welcome</legend>
-          {{template "randomcharacters" "Welcome to tjsj.dev. As you can see, there's not much to see."}}
-          {{template "randomcharacters" "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now..."}}
+          <p class="random-popin">{{range split (printf "Welcome to tjsj.dev. As you can see, there's not much to see.")}}<span>{{.}}</span>{{end}}</p>
+          <p class="random-popin">{{range split (printf "Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now...")}}<span>{{.}}</span>{{end}}</p>
         </fieldset>
 
         <div class="split-container" style="flex-direction: column">
           <fieldset style="animation-delay: 400ms">
             <legend>Featured Projects</legend>
-            {{template "hexlist" dict "StartDelay" 500 "GapDelay" 100 "List" .ProjectsList}}
+            <ul class="home-post-list post-list">
+              {{range $index, $post := .PostList}}
+                <li style="animation-delay: {{add 500 (mul $index 100)}}ms">
+                  <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{join $post.Tags " - "}}">{{$post.Title}}</a>
+                  <p style="margin-top: 0;" class="hide-on-desktop">{{$post.Date}}</p>
+                </li>
+              {{else}}
+                <li style="animation-delay: 100ms">No posts found</li>
+              {{end}}
+            </ul>
           </fieldset>
           <fieldset style="animation-delay: 700ms">
             <legend>Recent Posts</legend>
@@ -59,20 +68,28 @@
 
       <fieldset class="split-container" style="animation-delay: 1000ms">
         <legend>Links</legend>
-        {{template "hexlist" dict "StartDelay" 1100 "GapDelay" 100 "List" (toHTMLList (list
-          "Email: tedjohnsonjs@gmail.com"
-          "Phone: (+353) 87 103 4822"
-          "Discord: tedski999#3759"
-          "Steam: tedski999"
-          "TCD ID: 19335618"
-        ))}}
-        {{template "hexlist" dict "StartDelay" 1300 "GapDelay" 100 "List" (toHTMLList (list
-          "<a href="https://github.com/tedski999" title="View&nbsp;all&nbsp;my&nbsp;programming&nbsp;projects&nbsp;on&nbsp;GitHub">GitHub Page</a>"
-          "<a href="https://www.linkedin.com/in/ted-johnson" title="View&nbsp;my&nbsp;professional&nbsp;history&nbsp;on&nbsp;LinkedIn">LinkedIn Page</a>"
-          "<a href="/pgp-public-key.txt" title="Download&nbsp;my&nbsp;public&nbsp;PGP&nbsp;key">PGP Public Key</a>"
-          "<a href="/ssh-public-key.txt" title="Download&nbsp;this&nbsp;servers&nbsp;public&nbsp;SSH&nbsp;key">SSH Public Key</a>"
-          "<a href="/geekcode.txt" title="Decode&nbsp;my&nbsp;geekcode">geekcode</a>"
-        ))}}
+        <ul class="hexlist">
+          {{range $index, $item := list
+            "Email: tedjohnsonjs@gmail.com"
+            "Phone: (+353) 87 103 4822"
+            "Discord: tedski999#3759"
+            "Steam: tedski999"
+            "TCD ID: 19335618"
+          }}
+            <li style="animation-delay: {{add 1100 (mul 100 $index)}}ms">{{printf "0x%04X" (mul $index 4)}} {{$item}}</li>
+          {{end}}
+        </ul>
+        <ul class="hexlist">
+          {{range $index, $item := toHTMLList (list
+            "<a href="https://github.com/tedski999" title="View&nbsp;all&nbsp;my&nbsp;programming&nbsp;projects&nbsp;on&nbsp;GitHub">GitHub Page</a>"
+            "<a href="https://www.linkedin.com/in/ted-johnson" title="View&nbsp;my&nbsp;professional&nbsp;history&nbsp;on&nbsp;LinkedIn">LinkedIn Page</a>"
+            "<a href="/pgp-public-key.txt" title="Download&nbsp;my&nbsp;public&nbsp;PGP&nbsp;key">PGP Public Key</a>"
+            "<a href="/ssh-public-key.txt" title="Download&nbsp;this&nbsp;servers&nbsp;public&nbsp;SSH&nbsp;key">SSH Public Key</a>"
+            "<a href="/geekcode.txt" title="Decode&nbsp;my&nbsp;geekcode">geekcode</a>"
+          )}}
+            <li style="animation-delay: {{add 1300 (mul 100 $index)}}ms">{{printf "0x%04X" (mul $index 4)}} {{$item}}</li>
+          {{end}}
+        </ul>
       </fieldset>
 
     </div>

@@ -58,12 +58,14 @@ func (server *Server) homeResponse(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of posts metadata filtered by queries
 	// NOTE: below is an example response
 	postList := []postMetadata {
+		/*
 		{ "2021-06-28", "Web Dev Shenanigans",                    []string {"Project","Web Dev","Go" }, "web-dev-shenanigans" },
 		{ "2021-06-22", "a",                                      []string {"Game Dev","C/C++" },       "a" },
 		{ "2021-06-04", "Another post title which is quite long", nil,                  "another-post-tite-which-is-quite-long" },
 		{ "2021-06-04", "This title is obnoxiously long just to show off what happens to those who defy me",
 		   nil,"this-title-is-obnoxiously-long-just-to-show-off-what-happens-to-those-who-defy-me" },
 		{ "2021-05-11", "Hello World",                            []string {"Casual"},                  "hello-world" },
+		*/
 	}
 
 	server.executeHTMLTemplate(w, "home.html", homeResponseData {
@@ -101,12 +103,14 @@ func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 	// TODO: get list of posts metadata filtered by queries
 	// NOTE: below is an example response
 	postList := []postMetadata {
+		/*
 		{ "2021-06-28", "Web Dev Shenanigans",                    []string {"Project","Web Dev","Go" }, "web-dev-shenanigans" },
 		{ "2021-06-22", "a",                                      []string {"Game Dev","C/C++" },       "a" },
 		{ "2021-06-04", "Another post title which is quite long", nil,                  "another-post-tite-which-is-quite-long" },
 		{ "2021-06-04", "This title is obnoxiously long just to show off what happens to those who defy me",
 		   nil,"this-title-is-obnoxiously-long-just-to-show-off-what-happens-to-those-who-defy-me" },
 		{ "2021-05-11", "Hello World",                            []string {"Casual"},                  "hello-world" },
+		*/
 	}
 
 	// TODO: get all the possible search queries

@@ -26,6 +26,7 @@ type homeResponseData struct {
 }
 
 type postsResponseData struct {
+	IsQuery bool
 	SearchQuery, MonthQuery, YearQuery string
 	TagList map[string]bool
 	YearList map[string][][2]string
@@ -128,6 +129,7 @@ func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	server.executeHTMLTemplate(w, "posts.html", postsResponseData {
+		(searchQuery != "" || monthQuery != "" || yearQuery != "" || len(tagsQuery) != 0),
 		searchQuery, monthQuery, yearQuery,
 		tagMap, allDates, postList,
 	})

@@ -1,0 +1,19 @@
+@media (max-width: 799px) {
+  .post-list {
+    padding-left: 1em;
+  }
+  .post-list li::marker {
+    content: "x ";
+  }
+}
+
+@media (min-width: 800px) {
+  .post-list li {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .home-post-list {
+    margin: 0;
+  }
+}

@@ -5,7 +5,6 @@
   --link-color: orange;
 }
 
-/* Common styling */
 body {
   background-color: var(--bg-color);
   font-family: var(--font-family);
@@ -34,6 +33,32 @@ a:hover, a.hover, .dropdown-menu:hover > a {
 ul {
   padding: 0;
   list-style-type: none;
+}
+ul.horizontal-list {
+  margin: 0;
+}
+ul.horizontal-list > li {
+  display: inline-block;
+  margin: 0.1em 0.5em;
+}
+
+/* Mobile-friendly fieldset panels */
+fieldset {
+  margin: 1em;
+  min-width: 0;
+  border-style: double;
+  border-color: var(--accent-color);
+}
+@media (min-width: 800px) {
+  fieldset {
+    box-sizing: border-box;
+    transition: margin 200ms, padding 200ms;
+    padding: 1em;
+  }
+  fieldset:hover {
+    margin: 1.40em;
+    padding: 0.60em;
+  }
 }
 
 /* Scrollbar */
@@ -72,26 +97,6 @@ ul {
   max-width: 1000px;
 }
 
-/* Home page title art and motd */
-.home-title {
-  padding-top: 2em;
-  text-align: center;
-  font-style: italic;
-}
-.home-title img {
-  width: 80%;
-  height: auto;
-  max-width: 500px;
-  image-rendering: pixelated;
-  -webkit-animation: clipping-reveal 1s steps(3, start);
-  animation: clipping-reveal 1s steps(3, start);
-  opacity: 100%;
-}
-@keyframes clipping-reveal {
-  0% { clip-path: inset(0 0 100% 0); }
-  100% { clip-path: inset(0); }
-}
-
 /* Mobile-friendly split container layout */
 @media (min-width: 800px) {
   .split-container {
@@ -104,25 +109,6 @@ ul {
     flex: 1;
     box-sizing: border-box;
     min-width: 0;
-  }
-}
-
-/* Mobile-friendly fieldset panels */
-fieldset {
-  margin: 1em;
-  min-width: 0;
-  border-style: double;
-  border-color: var(--accent-color);
-}
-@media (min-width: 800px) {
-  fieldset {
-    box-sizing: border-box;
-    transition: margin 200ms, padding 200ms;
-    padding: 1em;
-  }
-  fieldset:hover {
-    margin: 1.40em;
-    padding: 0.60em;
   }
 }
 
@@ -169,8 +155,6 @@ form input::placeholder {
 form input:focus {
   outline: none !important;
 }
-
-/* Better checkboxes */
 form input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -203,15 +187,6 @@ input[type="checkbox"]:checked + span:before {
   background-color: var(--accent-color);
 }
 
-/* Space li horizontally */
-.horizontal-list {
-  margin: 0;
-}
-.horizontal-list > li {
-  display: inline-block;
-  margin: 0.1em 0.5em;
-}
-
 /* Drop down menus */
 .dropdown-menu {
   position: relative;
@@ -230,26 +205,6 @@ input[type="checkbox"]:checked + span:before {
 }
 .dropdown-menu:hover .dropdown-content {
   display: block;
-}
-
-/* The list of posts */
-@media (max-width: 799px) {
-  .post-list {
-    padding-left: 1em;
-  }
-  .post-list li::marker {
-    content: "x ";
-  }
-}
-@media (min-width: 800px) {
-  .post-list li {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  .home-post-list {
-    margin: 0;
-  }
 }
 
 /* Hexadecimal styled lists */
@@ -278,52 +233,9 @@ input[type="checkbox"]:checked + span:before {
 .random-popin *:nth-of-type(9n+4) { -webkit-animation-delay: 200ms; animation-delay: 200ms; }
 .random-popin *:nth-of-type(8n+2) { -webkit-animation-delay: 150ms; animation-delay: 150ms; }
 .random-popin *:nth-of-type(9n+1) { -webkit-animation-delay: 100ms; animation-delay: 100ms; }
-
-/* Animation used for popping-in elements */
 @keyframes popin-animation {
   99% { opacity: 0%; }
   100% { opacity: 100%; }
-}
-
-/* Error page */
-.error {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  padding: 0 1em;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  font-family: monospace, var(--font-family);
-  text-align: center;
-  border-style: double;
-  border-color: var(--accent-color);
-  color: white;
-}
-.error-highlight {
-  color: var(--accent-color);
-}
-
-/* "Under Construction" marquee at bottom of screen */
-.under-construction-marquee {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  white-space: nowrap;
-}
-.under-construction-marquee div {
-  display: inline-block;
-  padding-left: 100%;
-  -webkit-animation: marquee 10s linear infinite;
-  animation: marquee 10s linear infinite;
-}
-@keyframes marquee {
-  100% {
-    -webkit-transform: translate(-100%, 0);
-    -ms-transform: translate(-100%, 0);
-    transform: translate(-100%, 0);
-  }
 }
 
 /* Generic responsive classes */

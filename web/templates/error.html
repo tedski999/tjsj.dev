@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en">
-  {{template "head" dict "SubtitlesList" (list (printf "%d" .Code)) "NoIndex" 1}}
+  {{template "head" dict
+    "SubtitlesList" (list (printf "%d" .Code))
+    "NoIndex" 1
+    "Stylesheet" "/css/error.css"
+  }}
   <body>
     {{template "nav"}}
     <div class="error random-popin">

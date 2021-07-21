@@ -11,6 +11,9 @@
   {{if .KeywordsList}}
     <meta name="keywords" content="{{join .KeywordsList ","}}">
   {{end}}
+  {{if .Canonical}}
+    <link rel="canonical" href="{{.Canonical}}">
+  {{end}}
   {{if .NoIndex}}
     <meta name="robots" content="noindex">
   {{end}}

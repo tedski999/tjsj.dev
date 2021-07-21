@@ -14,7 +14,7 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "url": "https://tjsj.dev",
-        "logo": "https://tjsj.dev/logo.png"
+        "logo": "https://tjsj.dev/img/logo.png"
       }
     </script>
 
@@ -25,7 +25,7 @@
     <div class="main ordered-popin">
 
       <div class="home-title" style="animation-delay: 0ms">
-        <img src="/title-art.png" alt="tjsj.dev title art" width="26" height="3">
+        <img src="/img/title-art.png" alt="tjsj.dev" width="26" height="3">
         <p class="random-popin">{{range split (printf "\"%s\"" .SplashText)}}<span>{{.}}</span>{{end}}</p>
       </div>
 
@@ -85,9 +85,9 @@
           {{range $index, $item := toHTMLList (list
             "<a href="https://github.com/tedski999" title="View&nbsp;all&nbsp;my&nbsp;programming&nbsp;projects&nbsp;on&nbsp;GitHub">GitHub Page</a>"
             "<a href="https://www.linkedin.com/in/ted-johnson" title="View&nbsp;my&nbsp;professional&nbsp;history&nbsp;on&nbsp;LinkedIn">LinkedIn Page</a>"
-            "<a href="/pgp-public-key.txt" title="Download&nbsp;my&nbsp;public&nbsp;PGP&nbsp;key">PGP Public Key</a>"
-            "<a href="/ssh-public-key.txt" title="Download&nbsp;this&nbsp;servers&nbsp;public&nbsp;SSH&nbsp;key">SSH Public Key</a>"
-            "<a href="/geekcode.txt" title="Decode&nbsp;my&nbsp;geekcode">geekcode</a>"
+            "<a href="/downloads/pgp-public-key.txt" title="Download&nbsp;my&nbsp;public&nbsp;PGP&nbsp;key">PGP Public Key</a>"
+            "<a href="/downloads/ssh-public-key.txt" title="Download&nbsp;this&nbsp;servers&nbsp;public&nbsp;SSH&nbsp;key">SSH Public Key</a>"
+            "<a href="/downloads/geekcode.txt" title="Decode&nbsp;my&nbsp;geekcode">geekcode</a>"
           )}}
             <li style="animation-delay: {{add 1300 (mul 100 $index)}}ms">{{printf "0x%04X" (mul $index 4)}} {{$item}}</li>
           {{end}}

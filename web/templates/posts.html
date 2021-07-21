@@ -12,67 +12,128 @@
       {{template "nav"}}
     </header>
 
-    <div class="main split-container {{if not .IsQuery}}ordered-popin{{end}}">
+    <div class="main split-container {{if not (or .Query.Search .Query.Tags .Query.Year .Query.Month)}}ordered-popin{{end}}">
 
-      <div style="position: relative; z-index: 1;">
-        <fieldset style="animation-delay: 0ms;">
+      <form style="position: relative; z-index: 1;">
+        <fieldset>
           <legend>Filter</legend>
-          <form>
-            {{if .YearQuery}}
-              <input type="hidden" name="y" value={{.YearQuery}}>
+          <input
+            type="search"
+            maxlength="50"
+            placeholder="Search..."
+            name="s"
+            value="{{.Query.Search}}"
+          />
+          <br>
+          <ul class="horizontal-list" >
+            {{$tags_query := .Query.Tags}}
+            {{range $tag := .Tags}}
+              <li>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="t"
+                    value="{{$tag}}"
+                    {{if contains $tags_query $tag}}
+                      checked
+                    {{end}}
+                  />
+                  <span></span>
+                  {{$tag}}
+                </label>
+              </li>
+            {{else}}
+              <li>No tags available</li>
             {{end}}
-            {{if .MonthQuery}}
-              <input type="hidden" name="m" value={{.MonthQuery}}>
-            {{end}}
-            <input type="search" maxlength="50" name="s" placeholder="Search..." style="width: 95%; animation-delay: 100ms;" value="{{.SearchQuery}}" /><br>
-            <ul class="horizontal-list" >
-              {{$index := 0}}
-              {{range $tag, $checked := .TagList}}
-                <li style="animation-delay: {{add 200 (mul 50 $index)}}ms;"><label><input type="checkbox" name="t" value="{{$tag}}" {{if $checked}}checked{{end}}/><span></span>{{$tag}}</label></li>
-                {{$index = add $index 1}}
-              {{else}}
-                <li style="animation-delay: 200ms;">No tags available</li>
-              {{end}}
-            </ul>
-            <br>
-            <input type="submit" value="Filter" style="animation-delay: 400ms;" />
-          </form>
+          </ul>
+          <br>
+          <button type="submit">Filter</button>
+          <a href="/posts">Reset</a>
         </fieldset>
-        <fieldset style="animation-delay: 0ms;">
+        <fieldset>
           <legend>Dates</legend>
           <ul class="horizontal-list">
-            {{$index := 0}}
-            {{$yearquery := .YearQuery}}
-            {{$monthquery := .MonthQuery}}
-            {{range $year, $months := .YearList}}
-              <li class="dropdown-menu" style="animation-delay: {{add 50 (mul 100 $index)}}ms">
-                <a class="hide-on-touch {{if eq $yearquery $year}}hover{{end}}" href="?y={{$year}}">{{$year}}</a>
-                <a class="hide-on-mouse {{if eq $yearquery $year}}hover{{end}}">{{$year}}</a>
+            {{$year_query := .Query.Year}}
+            {{$month_query := .Query.Month}}
+            {{range $year, $months := .Dates}}
+              <li class="dropdown-menu">
+                <input
+                  type="submit"
+                  class="hide-on-touch {{if eq $year $year_query}}hover{{end}}"
+                  name="d"
+                  value="{{$year}}"
+                />
+                <input
+                  type="button"
+                  class="hide-on-mouse {{if eq $year $year_query}}hover{{end}}"
+                  value="{{$year}}"
+                />
                 <ul class="dropdown-content ordered-popin">
-                  <li class="hide-on-mouse" style="margin-bottom: 0.5em"><a href="?y={{$year}}" class="{{if eq $yearquery $year}}{{if not $monthquery}}hover{{end}}{{end}}">All</a></li>
+                  <li
+                    class="hide-on-mouse"
+                    style="margin-bottom: 0.5em"
+                  >
+                    <button
+                      type="submit"
+                      {{if eq $year $year_query}}
+                        {{if not $month_query}}
+                          class="hover"
+                        {{end}}
+                      {{end}}
+                      name="d"
+                      value="{{$year}}"
+                    >
+                      All
+                    </button>
+                  </li>
                   {{range $index, $month := $months}}
-                    <li style="animation-delay: {{mul $index 50}}ms;"><a href="?y={{$year}}&m={{index $month 1}}" {{if eq $yearquery $year}}{{if eq $monthquery (index $month 1)}}class="hover"{{end}}{{end}}>{{index $month 0}}</a></li>
+                    <li style="animation-delay: {{mul $index 50}}ms">
+                      <button
+                        type="submit"
+                        {{if eq $year $year_query}}
+                          {{if eq $month $month_query}}
+                            class="hover"
+                          {{end}}
+                        {{end}}
+                        name="d"
+                        value="{{$year}} {{$month}}"
+                      >
+                        {{index (list "None"
+                            "January" "February" "March"
+                            "April" "May" "June"
+                            "July" "August" "September"
+                            "October" "November" "December")
+                          $month}}
+                      </button>
+                    </li>
                   {{end}}
                 </ul>
               </li>
-              {{$index = add $index 1}}
             {{else}}
-              <li style="animation-delay: 50ms;">No dates available</li>
+              <li>No dates available</li>
             {{end}}
           </ul>
         </fieldset>
-      </div>
+        {{if or .Query.Year .Query.Month}}
+          <input
+            type="hidden"
+            name="d"
+            value="{{if .Query.Year}}{{.Query.Year}}{{end}}{{if .Query.Month}} {{.Query.Month}}{{end}}"
+          />
+        {{end}}
+      </form>
 
-      <fieldset style="flex: 2; animation-delay: 0ms;">
+      <fieldset style="flex: 2">
         <legend>Posts</legend>
         <ul class="post-list ordered-popin">
-          {{range $index, $post := .PostList}}
-            <li style="animation-delay: {{add 100 (mul $index 50)}}ms">
-              <span class="hide-on-mobile">{{$post.Date}} </span><a href="/posts/{{$post.ID}}" title="{{join $post.Tags " - "}}">{{$post.Title}}</a>
-              <p style="margin-top: 0;" class="hide-on-desktop">{{$post.Date}}</p>
+          {{range $index, $post := .Posts}}
+            <li style="animation-delay: {{mul $index 50}}ms">
+              <span class="hide-on-mobile">{{$post.Date}} </span>
+              <a href="/posts/{{$post.ID}}" title="{{join $post.Tags " - "}}">{{$post.Title}}</a>
+              <p class="hide-on-desktop">{{$post.Date}}</p>
             </li>
           {{else}}
-            <li style="animation-delay: 100ms">No posts found</li>
+            <li>No posts found</li>
           {{end}}
         </ul>
       </fieldset>

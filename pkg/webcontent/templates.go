@@ -41,6 +41,14 @@ func (content *Content) loadHTMLTemplates() error {
 			}
 			return dict
 		},
+		"contains": func(slice []string, target string) bool {
+			for _, item := range slice {
+				if item == target {
+					return true
+				}
+			}
+			return false
+		},
 		"toHTML": func(text string) template.HTML {
 			return template.HTML(text)
 		},

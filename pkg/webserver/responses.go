@@ -3,6 +3,8 @@ package webserver
 import (
 	"net/http"
 	"fmt"
+	"strings"
+	"strconv"
 	"errors"
 )
 
@@ -25,16 +27,16 @@ type homeResponseData struct {
 	PostList []postMetadata
 }
 
-type postsResponseData struct {
-	IsQuery bool
-	SearchQuery, MonthQuery, YearQuery string
-	TagList map[string]bool
-	YearList map[string][][2]string
-	PostList []postMetadata
+type postsResponse struct {
+	Query postsResponseQuery
+	Tags []string
+	Dates map[int][]int
+	Posts []postMetadata
 }
-type postsResponseDataYearList struct {
-	Name string
-	MonthList []string
+type postsResponseQuery struct {
+	Search string
+	Tags []string
+	Year, Month int
 }
 
 type statsResponseData struct {
@@ -97,13 +99,25 @@ func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 
 	// Retrieve search query
 	searchQuery := r.URL.Query().Get("s")
-	monthQuery := r.URL.Query().Get("m")
-	yearQuery := r.URL.Query().Get("y")
 	tagsQuery := r.URL.Query()["t"]
+	dateQuery := r.URL.Query().Get("d")
+
+	// Parse dateQuery to year and month integers
+	var yearQuery, monthQuery int
+	dateQueryParts := strings.SplitN(dateQuery, " ", 2)
+	if len(dateQueryParts) > 0 {
+		yearQuery, _ = strconv.Atoi(dateQueryParts[0]);
+	}
+	if len(dateQueryParts) > 1 {
+		monthQuery, _ = strconv.Atoi(dateQueryParts[1]);
+		if monthQuery < 1 || monthQuery > 12 {
+			monthQuery = 0
+		}
+	}
 
 	// TODO: get list of posts metadata filtered by queries
 	// NOTE: below is an example response
-	postList := []postMetadata {
+	posts := []postMetadata {
 		/*
 		{ "2021-06-28", "Web Dev Shenanigans",                    []string {"Project","Web Dev","Go" }, "web-dev-shenanigans" },
 		{ "2021-06-22", "a",                                      []string {"Game Dev","C/C++" },       "a" },
@@ -116,22 +130,18 @@ func (server *Server) postsResponse(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: get all the possible search queries
 	// NOTE: below is an example response
-	allTags := []string {"Project","Web Dev","Game Dev","Go","C/C++","Python","Java"}
-	allDates := map[string][][2]string {
-		"2021": {{"January","1"},{"March","3"},{"April","4"},{"June","8"}},
-		"2020": {{"May","5"},{"June","6"},{"August","8"},{"November","11"},{"December","12"}},
+	tags := []string {
+		"Project", "Web Dev", "Game Dev",
+		"Go", "C/C++", "Python", "Java",
+	}
+	dates := map[int][]int {
+		2021: { 1, 3, 4, 8},
+		2020: { 5, 6, 8, 11, 12},
 	}
 
-	// Mark every tag that is part of the query
-	tagMap := make(map[string]bool)
-	for _, tag := range allTags {
-		tagMap[tag] = isStringInSlice(tag, tagsQuery)
-	}
-
-	server.executeHTMLTemplate(w, "posts.html", postsResponseData {
-		(searchQuery != "" || monthQuery != "" || yearQuery != "" || len(tagsQuery) != 0),
-		searchQuery, monthQuery, yearQuery,
-		tagMap, allDates, postList,
+	server.executeHTMLTemplate(w, "posts.html", postsResponse {
+		postsResponseQuery { searchQuery, tagsQuery, yearQuery, monthQuery },
+		tags, dates, posts,
 	})
 }
 
@@ -253,14 +263,3 @@ func bytesToHumanReadable(bytes uint64) string {
 
 	return fmt.Sprintf("%.1f%cB", float64(bytes) / 1000.0, prefixes[magnitude]);
 }
-
-// Determine if a string is within a slice
-func isStringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
-

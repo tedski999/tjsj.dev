@@ -6,7 +6,6 @@
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: monospace, var(--font-family);
   text-align: center;
   border-style: double;
   border-color: var(--accent-color);

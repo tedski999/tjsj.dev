@@ -1,13 +1,18 @@
+@font-face {
+  font-family: "terminus";
+  src: url("/fonts/terminus.woff") format("woff");
+}
+
 :root {
   --bg-color: black;
-  --font-family: Courier, monospace;
+  --font-family: terminus, monospace;
   --accent-color: red;
   --link-color: orange;
 }
 
 body {
   background-color: var(--bg-color);
-  font-family: var(--font-family);
+  font: 1.1rem var(--font-family);
   color: var(--accent-color);
 }
 
@@ -16,7 +21,7 @@ a {
   text-decoration: none;
   color: var(--link-color);
   background-image: linear-gradient(var(--link-color), var(--link-color));
-  background-position: 0 90%;
+  background-position: 0 100%;
   background-size: 100% .05em;
   background-repeat: no-repeat;
   transition:
@@ -114,12 +119,12 @@ fieldset {
 
 /* Form styling */
 form label {
-  font: 0.9em var(--font-family);
+  font: 1rem var(--font-family);
 }
 form input {
   background: var(--bg-color);
   border-color: var(--accent-color);
-  font: 0.9em var(--font-family);
+  font: 1rem var(--font-family);
   color: var(--accent-color);
   border: 2px solid var(--accent-color);
 }

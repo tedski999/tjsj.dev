@@ -1,0 +1,36 @@
+{
+	"name": "tjsj.dev",
+	"data": "data.json",
+	"static": {
+		"directory": "public",
+		"sitemap": "sitemap.xml",
+		"minify": {
+			"css/core.css": "text/css",
+			"css/home.css": "text/css",
+			"css/error.css": "text/css",
+			"css/posts.css": "text/css",
+			"css/stats.css": "text/css"
+		}
+	},
+	"segments": [
+		"segments/head.html",
+		"segments/nav.html"
+	],
+	"pages": {
+		"/": "pages/home.html",
+		"/stats": "pages/stats.html",
+		"/projects/": "pages/projects.html",
+		"/projects/ssa": "pages/projects/ssa.html",
+		"/projects/raycaster": "pages/projects/raycaster.html",
+		"/posts/": "pages/posts.html",
+		"/posts/foo-bar-baz": "pages/posts/foo-bar-baz.html",
+		"/posts/webdev-moment": "pages/posts/webdev-moment.html",
+		"/posts/my-new-site": "pages/posts/my-new-site.html",
+		"/repos/": "pages/repos.html"
+	},
+	"errorTemplate": "segments/error.html",
+	"errors": {
+		"notfound": "errors/notfound.html",
+		"internal": "errors/internal.html"
+	}
+}

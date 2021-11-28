@@ -1,0 +1,13 @@
+{
+	"projects": [
+		{ "title": "ssa", "shortDesc": "Very cool", "url": "/projects/ssa" },
+		{ "title": "raycaster", "shortDesc": "Gee I hope this works", "url": "/projects/raycaster" },
+		{ "title": "tjsj.dev", "shortDesc": "Is this procrastinating?", "url": "/projects/tjsj.dev" }
+	],
+
+	"posts": [
+		{ "title": "Hello, World", "date": "2021-11-28", "url": "/posts/hello-world" },
+		{ "title": "My new website", "date": "2021-11-29", "url": "/posts/my-new-website" },
+		{ "title": "Another post or something", "date": "2021-12-01", "url": "/posts/another-post-or-something" }
+	]
+}

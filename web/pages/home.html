@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	{{
+		template "head" dict
+		"Description" "Ted Johnson's personal homepage. Computer scientist, game designer and web developer. You can find my work and projects here, as well as links to any social media I shouldn't have joined."
+		"Keywords" "tedski999, Ted Johnson, Computer Science, Game Development, Portfolio"
+		"Canonical" "/"
+		"Stylesheets" (list "/css/home.css")
+	}}
+	<body>
+		<header>{{template "nav"}}</header>
+		<div class="main">
+			<div class="home-title">
+				<img src="/img/title-art.png" alt="tjsj.dev" width="26" height="3">
+				<p>Welcome and such</p>
+			</div>
+			<div class="split-container">
+				<fieldset>
+					<legend>Welcome</legend>
+					<p>Welcome to tjsj.dev. As you can see, there's not much to see.</p>
+					<p>Just you wait, there's going to be a bunch of cool stuff around here in no time. Any second now...</p>
+				</fieldset>
+				<div class="split-container" style="flex-direction: column">
+					<fieldset>
+						<legend>Featured Projects</legend>
+						<ul class="post-list">
+							{{range data "projects"}}
+							<li><a href="{{index . "url"}}">{{index . "title"}}</a> <span class="hide-on-desktop"><br></span>{{index . "shortDesc"}}</li>
+							{{end}}
+						</ul>
+					</fieldset>
+					<fieldset>
+						<legend>Recent Posts</legend>
+						<ul class="post-list">
+							{{range data "posts"}}
+							<li><span class="hide-on-mobile">{{index . "date"}} </span><a href="{{index . "url"}}">{{index . "title"}}</a><span class="hide-on-desktop"><br>{{index . "date"}}</span></li>
+							{{end}}
+						</ul>
+					</fieldset>
+				</div>
+			</div>
+			<fieldset class="split-container">
+				<legend>Links</legend>
+				<ul class="hexlist">
+					<li>0x0000 Email:   tedjohnsonjs@gmail.com</li>
+					<li>0x0004 TCD:     edjohnso@tcd.ie</li>
+					<li>0x0008 Phone:   (+353) 87 103 4822</li>
+					<li>0x000C Discord: tedski999#3759</li>
+					<li>0x0010 Country: Ireland</li>
+				</ul>
+				<ul class="hexlist">
+					<li>0x0014 <a href="https://github.com/tedski999" title="View all my programming projects on GitHub">GitHub Page</a></li>
+					<li>0x0018 <a href="https://www.linkedin.com/in/ted-johnson" title="View my professional history on LinkedIn">LinkedIn Page</a></li>
+					<li>0x001C <a href="/downloads/pgp-public-key.txt" title="Download my public PGP key">PGP Public Key</a></li>
+					<li>0x0020 <a href="/downloads/ssh-public-key.txt" title="Download this servers public SSH key">SSH Public Key</a></li>
+					<li>0x0024 <a href="/downloads/geekcode.txt" title="Decode my geekcode">geekcode</a></li>
+				</ul>
+			</fieldset>
+		</div>
+		<div class="under-construction-marquee">
+			<div>WEBSITE UNDER CONSTRUCTION - EXPECT DELAYS</div>
+		</div>
+	</body>
+</html>

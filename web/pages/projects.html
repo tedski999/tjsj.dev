@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	{{
+		template "head" dict
+		"Title" "Projects"
+		"Description" "TODO"
+		"Keywords" "tedski999, Ted Johnson, Computer Science, Game Development, Portfolio"
+		"Canonical" "/projects/"
+		"Stylesheets" (list "/css/projects.css")
+	}}
+	<body>
+		<header>{{template "nav"}}</header>
+		<div class="main">
+			<fieldset>
+				<legend>Projects</legend>
+				<ul class="post-list">
+					{{range data "projects"}}
+					<li><a href="{{index . "url"}}">{{index . "title"}}</a> <span class="hide-on-desktop"><br></span>{{index . "shortDesc"}}</li>
+					{{end}}
+				</ul>
+			</fieldset>
+		</div>
+	</body>
+</html>

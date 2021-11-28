@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+	{{
+		template "head" dict
+		"Title" .Code
+		"Stylesheets" (list "/css/error.css")
+	}}
+	<body>
+		<header>{{template "nav"}}</header>
+		<div class="error random-popin">
+			<p class="error-highlight">{{range split "Critical Error"}}<span>{{.}}</span>{{end}}</p>
+			<p><b class="error-highlight">{{.Code}}:</b> {{range split .Message}}<span>{{.}}</span>{{end}}</p>
+		</div>
+	</body>
+</html>

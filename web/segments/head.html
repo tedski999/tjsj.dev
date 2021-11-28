@@ -1,0 +1,15 @@
+{{define "head"}}
+<head>
+	<title>{{if .Title}}{{.Title}} - {{end}}tjsj.dev</title>
+	{{if .Description}}<meta name="description" content="{{.Description}}">{{end}}
+	{{if .Keywords}}<meta name="keywords" content="{{.Keywords}}">{{end}}
+	{{if .NoIndex}}<meta name="robots" content="noindex">{{end}}
+	{{if .Canonical}}<link rel="canonical" href="{{.Canonical}}">{{end}}
+	<link rel="stylesheet" href="/css/core.css">
+	{{range .Stylesheets}}<link rel="stylesheet" href="{{.}}">{{end}}
+	<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+	<link rel="manifest" href="/icon/site.webmanifest">
+	<script>/* Chrome bug 332189 workaround */</script>
+</head>
+{{end}}

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	{{
+		template "head" dict
+		"Title" "Posts"
+		"Description" "Read all of Ted Johnson's unhinged ramblings here. Topics generally include computer science, game development and anything else that catches my interest."
+		"Keywords" "tedski999, Ted Johnson, Computer Science, Game Development, Portfolio"
+		"Canonical" "/posts/"
+		"Stylesheets" (list "/css/posts.css")
+	}}
+	<body>
+		<header>{{template "nav"}}</header>
+		<div class="main">
+			<fieldset>
+				<legend>Posts</legend>
+				<ul class="post-list">
+					{{range data "posts"}}
+					<li><span class="hide-on-mobile">{{index . "date"}} </span><a href="{{index . "url"}}">{{index . "title"}}</a><span class="hide-on-desktop"><br>{{index . "date"}}</span></li>
+					{{end}}
+				</ul>
+			</fieldset>
+		</div>
+	</body>
+</html>

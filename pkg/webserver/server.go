@@ -1,68 +1,70 @@
 package webserver
 
 import (
+	"log"
 	"net/http"
-	"sync"
-	"time"
-
+	"os"; "path"
+	"time"; "sync"
 	"github.com/gorilla/mux"
 	"github.com/NYTimes/gziphandler"
-	"github.com/tdewolff/minify/v2"
-	"github.com/tdewolff/minify/v2/css"
-
-	"github.com/tedski999/tjsj.dev/pkg/webcontent"
-	"github.com/tedski999/tjsj.dev/pkg/webstats"
+	"github.com/tedski999/tjsj.dev/pkg/sitegen"
 )
 
 type Server struct {
-	http *http.Server
-	certFilePath, keyFilePath string
-	content *webcontent.Content
-	stats *webstats.Statistics
-	doneWG sync.WaitGroup
-	errChan chan<- error
+	static http.Dir
+	http, https http.Server
+	httpWG, httpsWG sync.WaitGroup
 }
 
-func Create(content *webcontent.Content, stats *webstats.Statistics, certFilePath, keyFilePath string) (*Server, error) {
+func Create(siteFile string) (*Server, error) {
 
-	// Setup server
-	router := mux.NewRouter()
+	log.Println("Parsing site file " + siteFile + "...")
+	site, err := sitegen.ParseSiteFile(siteFile)
+	if err != nil { return nil, err }
+	root := path.Dir(siteFile)
+
 	server := &Server {
-		http: &http.Server {
-			Addr: ":https",
-			Handler: router,
+		static: http.Dir(path.Join(root, site.StaticDir)),
+		http: http.Server {
+			Addr: ":http",
 			ReadTimeout: 10 * time.Second,
 			WriteTimeout: 10 * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		},
-		certFilePath: certFilePath,
-		keyFilePath:keyFilePath,
-		content: content,
-		stats: stats,
+		https: http.Server {
+			Addr: ":https",
+			ReadTimeout: 10 * time.Second,
+			WriteTimeout: 10 * time.Second,
+			MaxHeaderBytes: 1 << 20,
+		},
 	}
 
-	// Setup the CSS minifier middleware
-	minifier := minify.New()
-	minifier.AddFunc("text/css", css.Minify)
-
-	// Setup HTTP route multiplexing
-	router.StrictSlash(true)
-	router.HandleFunc("/", server.homeResponse)
-	router.HandleFunc("/projects/", server.projectsResponse)
-	router.HandleFunc("/projects/{id}", server.projectResponse)
-	router.HandleFunc("/posts/", server.postsResponse)
-	router.HandleFunc("/posts/{id}", server.postResponse)
-	router.HandleFunc("/stats", server.statsResponse)
-	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		server.errorResponse(w, r, http.StatusNotFound)
+	log.Println("Registering HTTP route handlers...")
+	server.http.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "https://" + r.Host + r.RequestURI, http.StatusMovedPermanently)
 	})
 
-	router.Use(server.recordCompressedData)
-	router.Use(gziphandler.GzipHandler)
-	router.Use(minifier.Middleware)
-	router.Use(server.recordData)
-	router.Use(server.trimWWWRequests)
-	router.Use(server.serveStaticFiles)
+	log.Println("Registering HTTPS route handlers...")
+	// TODO Register request stats collection
+	httpsHandler := mux.NewRouter()
+	httpsHandler.Use(gziphandler.GzipHandler)
+	httpsHandler.Use(server.trimWWWRequests)
+	httpsHandler.Use(server.serveStaticFiles)
+	for route := range site.Pages {
+		file := path.Join(root, site.Pages[route])
+		httpsHandler.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+			if _, err := os.Stat(file); err != nil {
+				http.ServeFile(w, r, path.Join(root, site.Errors.Internal))
+			} else {
+				http.ServeFile(w, r, file)
+			}
+		})
+	}
+	httpsHandler.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		http.ServeFile(w, r, path.Join(root, site.Errors.NotFound))
+	})
+	server.https.Handler = httpsHandler
 
 	return server, nil
 }

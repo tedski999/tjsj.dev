@@ -13,30 +13,34 @@ import (
 type Server struct {
 	static http.Dir
 	http, https http.Server
-	httpWG, httpsWG sync.WaitGroup
+	wg sync.WaitGroup
+	stats statistics
 }
 
-func Create(siteFile string) (*Server, error) {
+func Create(siteFile, statFile string) (*Server, error) {
 
 	log.Println("Parsing site file " + siteFile + "...")
 	site, err := sitegen.ParseSiteFile(siteFile)
 	if err != nil { return nil, err }
 	root := path.Dir(siteFile)
 
-	server := &Server {
-		static: http.Dir(path.Join(root, site.StaticDir)),
-		http: http.Server {
-			Addr: ":http",
-			ReadTimeout: 10 * time.Second,
-			WriteTimeout: 10 * time.Second,
-			MaxHeaderBytes: 1 << 20,
-		},
-		https: http.Server {
-			Addr: ":https",
-			ReadTimeout: 10 * time.Second,
-			WriteTimeout: 10 * time.Second,
-			MaxHeaderBytes: 1 << 20,
-		},
+	var server Server
+	server.static = http.Dir(path.Join(root, site.StaticDir))
+	server.http = http.Server {
+		Addr: ":http",
+		ReadTimeout: 10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	server.https = http.Server {
+		Addr: ":https",
+		ReadTimeout: 10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	server.stats.file = statFile
+	for k := range site.Pages {
+		server.stats.pages = append(server.stats.pages, k)
 	}
 
 	log.Println("Registering HTTP route handlers...")
@@ -45,9 +49,10 @@ func Create(siteFile string) (*Server, error) {
 	})
 
 	log.Println("Registering HTTPS route handlers...")
-	// TODO Register request stats collection
 	httpsHandler := mux.NewRouter()
+	httpsHandler.Use(server.recordCompression)
 	httpsHandler.Use(gziphandler.GzipHandler)
+	httpsHandler.Use(server.recordRequest)
 	httpsHandler.Use(server.trimWWWRequests)
 	httpsHandler.Use(server.serveStaticFiles)
 	for route := range site.Pages {
@@ -66,5 +71,5 @@ func Create(siteFile string) (*Server, error) {
 	})
 	server.https.Handler = httpsHandler
 
-	return server, nil
+	return &server, nil
 }

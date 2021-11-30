@@ -1,13 +1,45 @@
 {
 	"projects": [
-		{ "title": "ssa", "shortDesc": "Very cool", "url": "/projects/ssa" },
-		{ "title": "raycaster", "shortDesc": "Gee I hope this works", "url": "/projects/raycaster" },
-		{ "title": "tjsj.dev", "shortDesc": "Is this procrastinating?", "url": "/projects/tjsj.dev" }
+		{
+			"title": "ssa",
+			"description": "Very cool",
+			"published": { "date": "2021-11-18", "time": "23:20:30" },
+			"updated": { "date": "2021-11-18", "time": "23:20:30" },
+			"url": "/projects/ssa"
+		},
+		{
+			"title": "raycaster",
+			"description": "Gee I hope this works",
+			"published": { "date": "2021-11-18", "time": "23:20:30" },
+			"updated": { "date": "2021-11-18", "time": "23:20:30" },
+			"url": "/projects/raycaster"
+		}
 	],
 
 	"posts": [
-		{ "title": "Hello, World", "date": "2021-11-28", "url": "/posts/hello-world" },
-		{ "title": "My new website", "date": "2021-11-29", "url": "/posts/my-new-website" },
-		{ "title": "Another post or something", "date": "2021-12-01", "url": "/posts/another-post-or-something" }
+		{
+			"title": "Hello, World",
+			"description": "This is my first dev post!",
+			"published": { "date": "2021-11-18", "time": "23:20:30" },
+			"updated": { "date": "2021-11-18", "time": "23:20:30" },
+			"url": "/posts/hello-world",
+			"markdown": "posts/hello_world.md"
+		},
+		{
+			"title": "My new website",
+			"description": "Wow very cool",
+			"published": { "date": "2021-11-18", "time": "23:20:30" },
+			"updated": { "date": "2021-11-18", "time": "23:20:30" },
+			"url": "/posts/my-new-website",
+			"markdown": "posts/my_new_website.md"
+		},
+		{
+			"title": "Another post or something",
+			"description": "Wow very cool",
+			"published": { "date": "2021-11-18", "time": "23:20:30" },
+			"updated": { "date": "2021-11-18", "time": "23:20:30" },
+			"url": "/posts/another-post-or-something",
+			"markdown": "posts/another_post_or_something.md"
+		}
 	]
 }

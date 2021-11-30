@@ -1,6 +1,14 @@
 {
 	"name": "tjsj.dev",
 	"data": "data.json",
+	"hooks": {
+		"pregen": [
+			["python", "hooks/generate_feeds.py"],
+			["python", "hooks/generate_posts.py"],
+			["python", "hooks/verify_data.py"]
+		],
+		"postgen": []
+	},
 	"static": {
 		"directory": "public",
 		"sitemap": "sitemap.xml",
@@ -9,7 +17,11 @@
 			"css/home.css": "text/css",
 			"css/error.css": "text/css",
 			"css/posts.css": "text/css",
-			"css/stats.css": "text/css"
+			"css/stats.css": "text/css",
+			"posts.atom": "application/xml",
+			"posts.xml": "application/xml",
+			"projects.atom": "application/xml",
+			"projects.xml": "application/xml"
 		}
 	},
 	"segments": [
@@ -23,9 +35,9 @@
 		"/projects/ssa": "pages/projects/ssa.html",
 		"/projects/raycaster": "pages/projects/raycaster.html",
 		"/posts/": "pages/posts.html",
-		"/posts/foo-bar-baz": "pages/posts/foo-bar-baz.html",
-		"/posts/webdev-moment": "pages/posts/webdev-moment.html",
-		"/posts/my-new-site": "pages/posts/my-new-site.html",
+		"/posts/hello-world": "pages/posts/hello_world.html",
+		"/posts/my-new-website": "pages/posts/my_new_website.html",
+		"/posts/another-post-or-something": "pages/posts/another_post_or_something.html",
 		"/repos/": "pages/repos.html"
 	},
 	"errorTemplate": "segments/error.html",

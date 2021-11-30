@@ -1,2 +1,7 @@
 /bin
 /live
+/web/pages/posts
+/web/public/posts.atom
+/web/public/posts.xml
+/web/public/projects.atom
+/web/public/projects.xml

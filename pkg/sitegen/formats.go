@@ -3,6 +3,10 @@ package sitegen
 type SiteTemplateFormat struct {
 	Name string `json:"name"`
 	Data string `json:"data"`
+	Hooks struct {
+		Pregen [][]string `json:"pregen"`
+		Postgen [][]string `json:"postgen"`
+	} `json:"hooks"`
 	Static struct {
 		Directory string `json:"directory"`
 		Sitemap string `json:"sitemap"`

@@ -23,10 +23,14 @@ func Generate(templateFile, dstDir string) error {
 	siteTemplate, err := ParseSiteTemplateFile(templateFile)
 	if err != nil { return err }
 	srcDir := path.Dir(templateFile)
-	dstDir, err = filepath.Abs(dstDir)
+	srcDirAbs, err := filepath.Abs(srcDir)
 	if err != nil { return err }
+	dstDirAbs, err := filepath.Abs(dstDir)
+	if err != nil { return err }
+	hookEnv := append(os.Environ(), "SITEGEN_SRC=" + srcDirAbs)
+	hookEnv = append(hookEnv, "SITEGEN_DST=" + dstDirAbs)
 
-	log.Println("Running pre-generation hooks...")
+	if len(siteTemplate.Hooks.Pregen) != 0 { log.Println("Running pre-generation hooks...") }
 	for _, args := range siteTemplate.Hooks.Pregen {
 		args[0], err = exec.LookPath(args[0])
 		if err != nil { return err }
@@ -36,7 +40,7 @@ func Generate(templateFile, dstDir string) error {
 			Dir: srcDir,
 			Stdout: os.Stdout,
 			Stderr: os.Stderr,
-			Env: append(os.Environ(), "SITEGEN_DST=" + dstDir),
+			Env: hookEnv,
 		}
 		if err := cmd.Run(); err != nil {
 			return err
@@ -51,7 +55,7 @@ func Generate(templateFile, dstDir string) error {
 	log.Printf("Generating site file %s from template file %s...\n", path.Join(dstDir, path.Base(templateFile)), templateFile)
 	if err = siteTemplate.generateSiteFile(templateFile, dstDir, m); err != nil { return err }
 
-	log.Println("Running post-generation hooks...")
+	if len(siteTemplate.Hooks.Postgen) != 0 { log.Println("Running post-generation hooks...") }
 	for _, args := range siteTemplate.Hooks.Postgen {
 		args[0], err = exec.LookPath(args[0])
 		if err != nil { return err }
@@ -61,7 +65,7 @@ func Generate(templateFile, dstDir string) error {
 			Dir: srcDir,
 			Stdout: os.Stdout,
 			Stderr: os.Stderr,
-			Env: append(os.Environ(), "SITEGEN_DST=" + dstDir),
+			Env: hookEnv,
 		}
 		if err := cmd.Run(); err != nil {
 			return err

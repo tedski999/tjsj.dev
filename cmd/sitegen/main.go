@@ -2,21 +2,25 @@ package main
 
 import (
 	"os"
-	"errors"
-	"log"; "fmt"
+	"fmt"
+	"log"
 	"github.com/tedski999/tjsj.dev/pkg/sitegen"
 )
 
 func main() {
-	if err := run(); err != nil {
+
+	// Ensure correct number of command-line arguments have been pased
+	if len(os.Args) != 3 {
+		fmt.Fprintf(os.Stderr, "Usage: %s <template file> <destination>\n", os.Args[0])
+		os.Exit(1)
+	}
+
+	// Generate site
+	log.Printf("Generating site in %s from template file %s...\n", os.Args[2], os.Args[1])
+	if err := sitegen.Generate(os.Args[1], os.Args[2]); err != nil {
 		fmt.Fprintf(os.Stderr, "\n%v\n", err)
 		os.Exit(1)
 	}
-	log.Println("Done!")
-}
 
-func run() error {
-	if len(os.Args) != 3 { return errors.New("Usage: " + os.Args[0] + " <template file> <destination>") }
-	log.Printf("Generating site in %s from template file %s...\n", os.Args[2], os.Args[1])
-	return sitegen.Generate(os.Args[1], os.Args[2])
+	log.Println("Done!")
 }

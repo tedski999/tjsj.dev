@@ -10,9 +10,9 @@ with open("data.json") as f:
     data = json.load(f)
 with open("tjsj.dev.json") as f:
     template = json.load(f)
-with open("posts/template.html") as f:
+with open("segments/post.html") as f:
     postTemplate = f.read()
-postTemplateDate = os.path.getmtime("posts/template.html")
+postTemplateDate = os.path.getmtime("segments/post.html")
 
 print("Scanning posts Markdown files for out-of-date HTML pages...")
 md = markdown.Markdown()
